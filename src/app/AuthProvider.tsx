@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   isAuthenticated: boolean | null;
-  session: any | null; // Replace 'any' with your session type
+  session: any | null;
   isLoading: boolean;
   checkAuth: () => Promise<void>;
 };
@@ -33,7 +33,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!res.ok) throw new Error("Auth check failed");
 
       const data = await res.json();
-      console.log("Auth check response:", data);
       setAuthState({
         isAuthenticated: data.authenticated,
         session: data.session,
