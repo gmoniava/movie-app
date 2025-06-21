@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verify, getSession } from "@/app/lib/auth";
 import { cookies } from "next/headers";
 
-const protectedRoutes = ["/main"];
+const protectedRoutes = ["/add-movie", "/edit-movie"];
 
 export default async function middleware(req: NextRequest) {
   // Check if current route is protected
@@ -19,7 +19,7 @@ export default async function middleware(req: NextRequest) {
 
   // No need to be on login page if user is already authenticated
   if (path === "/login" && session?.user) {
-    return NextResponse.redirect(new URL("/main", req.nextUrl));
+    return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
   return NextResponse.next();

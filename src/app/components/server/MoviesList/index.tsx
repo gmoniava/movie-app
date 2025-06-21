@@ -36,7 +36,7 @@ const MovieList = async ({ searchParams }: any) => {
                 <p className="text-gray-800 mt-2">{movie.description}</p>
               </div>
               <div className="flex items-center gap-1">
-                <Link className="btn-secondary" href={`/main/edit-movie/${movie.id}`}>
+                <Link className="btn-secondary" href={`/edit-movie/${movie.id}`}>
                   Edit movie
                 </Link>
                 <DeleteButton movieId={movie.id} />

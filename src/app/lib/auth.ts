@@ -65,7 +65,7 @@ export async function login(previousState: any, formData: FormData) {
   // Save the session in a cookie
   (await cookies()).set("session", session, { expires, httpOnly: true });
 
-  redirect("/main");
+  redirect("/");
 }
 
 export async function logout() {
