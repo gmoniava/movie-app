@@ -5,8 +5,10 @@ import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { useAuth } from "@/app/AuthProvider";
 
 export default function Page(props: any) {
+  const { isAuthenticated, session } = useAuth();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   return (
@@ -38,20 +40,22 @@ export default function Page(props: any) {
         </Link>
       </div>
 
-      {/* <div>
-        <button
-          type="submit"
-          className="cursor-pointer"
-          onClick={() => {
-            startTransition(async () => {
-              await logout();
-              redirect("/");
-            });
-          }}
-        >
-          Logout
-        </button>
-      </div> */}
+      {isAuthenticated && (
+        <div>
+          <button
+            type="submit"
+            className="cursor-pointer"
+            onClick={() => {
+              startTransition(async () => {
+                await logout();
+                redirect("/");
+              });
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 }

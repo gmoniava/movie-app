@@ -10,8 +10,12 @@ const DeleteButton = ({ movieId }: { movieId: string }) => {
     const confirmed = confirm("Are you sure you want to delete this movie?");
     if (!confirmed) return;
 
-    startTransition(() => {
-      deleteMovie(movieId);
+    startTransition(async () => {
+      const result = await deleteMovie(movieId);
+      if (result?.error) {
+        alert("Error deleting movie: " + result.error);
+        return;
+      }
     });
   };
 
