@@ -1,4 +1,17 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg-default: white;
+  --color-text-primary: black;
+}
+
+@layer base {
+  @variant dark {
+    --color-bg-default: #111827;
+    --color-text-primary: white;
+  }
+}
 
 .btn-primary {
   @apply px-4 rounded bg-blue-500 text-white w-[128px] cursor-pointer;

@@ -13,8 +13,9 @@ export default function Page(props: any) {
   const pathname = usePathname();
   return (
     <div
+      // Without setting pointer-events-none, when you hover over the hamburger icon the hand cursor will not show up always.
       className={`border-r border-r-gray-300 h-full flex flex-col gap-1 items-center transition-all ${
-        props.isOpen ? "w-64 opacity-100" : "w-0 opacity-0"
+        props.isOpen ? "w-64 opacity-100 pointer-events-auto" : "w-0 opacity-0 pointer-events-none"
       }`}
     >
       <div>
@@ -40,7 +41,7 @@ export default function Page(props: any) {
         </Link>
       </div>
 
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <div>
           <button
             type="submit"
@@ -54,6 +55,13 @@ export default function Page(props: any) {
           >
             Logout
           </button>
+        </div>
+      ) : (
+        <div>
+          {" "}
+          <Link href="/login" className={clsx("cursor-pointer")}>
+            Login
+          </Link>
         </div>
       )}
     </div>

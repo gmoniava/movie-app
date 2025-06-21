@@ -52,7 +52,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, []);
 
-  console.log("AuthProvider state:", authState);
   return (
     <AuthContext.Provider
       value={{
