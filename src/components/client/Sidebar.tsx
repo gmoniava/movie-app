@@ -1,6 +1,6 @@
 "use client";
 import { redirect } from "next/navigation";
-import { logout } from "../../lib/auth";
+import { logout } from "@/actions/auth";
 import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { useAuth } from "@/components/client/AuthProvider";
 
 export default function Page(props: any) {
-  const { isAuthenticated, session } = useAuth();
+  const { isAuthenticated, session, checkAuth } = useAuth();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   return (
@@ -49,7 +49,7 @@ export default function Page(props: any) {
             onClick={() => {
               startTransition(async () => {
                 await logout();
-                redirect("/");
+                checkAuth();
               });
             }}
           >

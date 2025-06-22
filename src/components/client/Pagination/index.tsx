@@ -9,8 +9,6 @@ export default function Pagination(props: any) {
   const pathname = usePathname();
   const { push } = useRouter();
 
-  console.log("Pagination rendered with searchParams:", searchParams);
-
   // Get the current page from the URL search params
   const page = parseInt(searchParams.get("page") || "1", 10);
 

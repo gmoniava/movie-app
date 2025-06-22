@@ -1,10 +1,24 @@
 "use client";
 
 import { useActionState } from "react";
-import { login } from "@/lib/auth";
+import { useRouter } from "next/navigation";
+import { login } from "@/actions/auth";
+import { useAuth } from "@/components/client/AuthProvider";
 
 export default function Search() {
-  const [state, formAction, isPending] = useActionState(login, null);
+  const { checkAuth } = useAuth();
+  const { push } = useRouter();
+
+  const [state, formAction, isPending] = useActionState(async (prevState: any, formData: any) => {
+    const result = await login(prevState, formData);
+
+    if (!result?.error) {
+      await checkAuth(); // Refresh context after server sets session
+      push("/"); // Navigate after everything is ready
+    }
+
+    return result;
+  }, null);
 
   return (
     <div className="h-full">
