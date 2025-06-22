@@ -11,7 +11,8 @@ export async function verify(input: string): Promise<any> {
   return payload;
 }
 export async function getSession() {
-  // Do this otherwise we get weird error from Nextjs about not being able to access next/headers outside app
+  // Do this otherwise we get error from Nextjs about not being able to access next/headers outside app folder
+  // (https://github.com/vercel/next.js/issues/49757)
   const { cookies } = await import("next/headers");
 
   const session = (await cookies()).get("session")?.value;
