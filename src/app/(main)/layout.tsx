@@ -2,7 +2,7 @@
 import Sidebar from "@/components/client/Sidebar";
 import React from "react";
 import Toggle from "@/components/client/ThemeToggle";
-
+import clsx from "clsx";
 export default function Layout({
   children,
 }: Readonly<{
@@ -11,8 +11,18 @@ export default function Layout({
   const [showSidebar, setShowSidebar] = React.useState(false);
   return (
     <div lang="en" className="h-full flex ">
-      <Sidebar isOpen={showSidebar} />
-      <div className="flex-1 flex flex-col h-full">
+      <Sidebar
+        isOpen={showSidebar}
+        close={() => {
+          setShowSidebar(false);
+        }}
+      />
+
+      <div
+        className={clsx("flex-1 flex flex-col h-full transition-[margin-left] duration-300 ease-in-out", {
+          "sm:ml-64": showSidebar,
+        })}
+      >
         <div className="border-b border-b-gray-300 p-[5px] flex items-center">
           <div
             className="cursor-pointer"

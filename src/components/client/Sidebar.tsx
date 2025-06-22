@@ -13,11 +13,43 @@ export default function Page(props: any) {
   const pathname = usePathname();
   return (
     <div
-      // Without setting pointer-events-none, when you hover over the hamburger icon the hand cursor will not show up always.
-      className={`border-r border-r-gray-300 h-full flex flex-col gap-1 items-center transition-all ${
-        props.isOpen ? "w-64 opacity-100 pointer-events-auto" : "w-0 opacity-0 pointer-events-none"
-      }`}
+      className={clsx(
+        "w-64 bg-bg-default fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100",
+        {
+          "left:0 opacity-100 p-5": props.isOpen,
+          "-left-64 opacity-0 ": !props.isOpen,
+        }
+      )}
     >
+      {/* Backdrop for mobile */}
+      {/* Visible only on mobile when sidebar is open */}
+      {props.isOpen && (
+        <div className="pointer-events-auto fixed left-64 top-0 right-0 bottom-0 bg-black opacity-25 flex items-center justify-center z-9050 md:hidden" />
+      )}
+
+      {/* Close button */}
+      {/* Visible only on mobile when sidebar is open */}
+      <div className="md:hidden w-64 flex justify-end pr-5">
+        <button
+          className="p-2 rounded-full hover:bg-gray-200 cursor-pointer"
+          onClick={() => {
+            props.close();
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
       <div>
         {" "}
         <Link
