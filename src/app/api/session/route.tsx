@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { verify } from "@/app/lib/auth";
+import { verify } from "@/lib/auth";
 
 export async function GET() {
   try {
