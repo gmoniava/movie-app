@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteMovie } from "@/app/lib/movies"; // adjust path
+import { deleteMovie } from "@/actions/movies"; // adjust path
 import { useTransition } from "react";
 import LoadingOverlay from "../LoadingOverlay";
 const DeleteButton = ({ movieId }: { movieId: string }) => {

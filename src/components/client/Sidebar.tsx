@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { useAuth } from "@/app/AuthProvider";
+import { useAuth } from "@/components/client/AuthProvider";
 
 export default function Page(props: any) {
   const { isAuthenticated, session } = useAuth();

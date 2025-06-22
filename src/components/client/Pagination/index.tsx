@@ -2,13 +2,14 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
-import { addMovie, searchMovies } from "@/app/lib/movies";
 
 export const PAGE_SIZE = 5;
 export default function Pagination(props: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
+
+  console.log("Pagination rendered with searchParams:", searchParams);
 
   // Get the current page from the URL search params
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -19,15 +20,15 @@ export default function Pagination(props: any) {
 
   // We basically want to get total here
   React.useEffect(() => {
-    // Convert searchParams to an object
-    // so we can pass it to searchMovies
-    const paramsObject = Object.fromEntries(searchParams.entries());
-
     const fetchData = async () => {
-      const result = await searchMovies(paramsObject);
-      if ("error" in result) return;
+      const response = await fetch(`api/movies?${searchParams.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
 
-      setTotal(result.total);
+      const json = await response.json();
+
+      setTotal(json.total);
     };
 
     fetchData();

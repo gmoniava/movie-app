@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verify, getSession } from "@/app/lib/auth";
-import { cookies } from "next/headers";
+import { getSession } from "@/lib/auth"; // Adjust import path
 
 const protectedRoutes = ["/add-movie", "/edit-movie"];
 

@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuth = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/lib/session");
+      const res = await fetch("api/session");
       if (!res.ok) throw new Error("Auth check failed");
 
       const data = await res.json();

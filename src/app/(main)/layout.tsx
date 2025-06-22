@@ -1,7 +1,7 @@
 "use client";
-import Sidebar from "@/app/components/client/sidebar";
+import Sidebar from "@/components/client/Sidebar";
 import React from "react";
-import Toggle from "../components/client/ThemeToggle";
+import Toggle from "@/components/client/ThemeToggle";
 
 export default function Layout({
   children,

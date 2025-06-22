@@ -1,5 +1,5 @@
-import { addMovie, getMovieById, searchMovies } from "@/app/lib/movies";
-import AddMovie from "../../add-movie/page";
+import { getMovieById } from "@/lib/movies";
+import AddMovie from "@/app/(main)/add-movie/page";
 
 export default async function Page(props: any) {
   const params = await props.params;

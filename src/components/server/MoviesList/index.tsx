@@ -1,13 +1,23 @@
 import React from "react";
 import Link from "next/link";
-import DeleteButton from "@/app/components/client/DeleteButton";
-import { addMovie, searchMovies } from "@/app/lib/movies";
+import DeleteButton from "@/components/client/DeleteButton";
+import { searchMovies } from "@/lib/movies";
 
 const MovieList = async ({ searchParams }: any) => {
-  // Search for movies using filters
-  const searchResults = await searchMovies(searchParams);
+  const urlSearchParams = new URLSearchParams();
 
-  // Was there error when searching movies?
+  // Convert searchParams to URLSearchParams
+  for (const key in searchParams) {
+    const value = searchParams[key];
+    if (Array.isArray(value)) {
+      value.forEach((v) => urlSearchParams.append(key, v));
+    } else if (value !== undefined) {
+      urlSearchParams.set(key, value);
+    }
+  }
+
+  const searchResults = await searchMovies(urlSearchParams);
+
   if ("error" in searchResults) return <div>{searchResults.error}</div>;
 
   return (

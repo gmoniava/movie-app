@@ -1,6 +1,6 @@
 "use client";
 
-import { addMovie, editMovie } from "@/app/lib/movies";
+import { addMovie, editMovie } from "@/actions/movies";
 import React, { useState, useTransition } from "react";
 
 const emptyForm = { name: "", release_year: "", actors: "", description: "", genres: [] };
