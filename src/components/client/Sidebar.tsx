@@ -14,7 +14,7 @@ export default function Page(props: any) {
   return (
     <div
       className={clsx(
-        "w-64 bg-bg-default fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100",
+        "w-64 bg-bg-default fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100 z-1",
         {
           "left:0 opacity-100 p-5": props.isOpen,
           "-left-64 opacity-0 ": !props.isOpen,
@@ -42,7 +42,7 @@ export default function Page(props: any) {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2"
           >
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
