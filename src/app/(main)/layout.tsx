@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from "@/components/client/Sidebar";
+import Sidebar from "@/components/client/SideBar";
 import React from "react";
 import Toggle from "@/components/client/ThemeToggle";
 import clsx from "clsx";
