@@ -52,6 +52,18 @@ export default function Page(props: any) {
       <div>
         {" "}
         <Link
+          href="/"
+          className={clsx("cursor-pointer", {
+            "bg-sky-100 text-blue-600": pathname === "/",
+          })}
+        >
+          Home
+        </Link>
+      </div>
+
+      <div>
+        {" "}
+        <Link
           href="/add-movie"
           className={clsx("cursor-pointer", {
             "bg-sky-100 text-blue-600": pathname === "/add-movie",

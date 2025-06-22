@@ -146,7 +146,7 @@ export default function Search({ name }: any) {
             </select>
           </div>
 
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded" disabled={isPending}>
+          <button type="submit" className="" disabled={isPending}>
             {isPending ? "Searching..." : "Search"}
           </button>
         </form>
