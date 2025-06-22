@@ -4,8 +4,8 @@ import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/actions/auth";
 import { useAuth } from "@/components/client/AuthProvider";
-
-export default function Search() {
+import Button from "@/components/client/Button";
+export default function Login() {
   const { checkAuth } = useAuth();
   const { push } = useRouter();
 
@@ -23,24 +23,25 @@ export default function Search() {
   return (
     <div className="h-full">
       <div className="flex justify-center items-center h-full">
-        <div className=" w-1/3 border border-slate-300 p-[10px] h-1/3 rounded-md flex flex-col">
-          <div className="text-2xl text-center">Please login</div>
-          <div className="text-gray-400 text-center">Enter username and password</div>
+        <div className=" w-1/3  border-slate-300 p-[10px] h-1/4 rounded-md flex flex-col border">
           <div className="flex-1">
+            <div className="text-xl text-center">Please login</div>
+            <div className="text-center">Enter username and password</div>
+          </div>
+          <div className="flex-3">
             {" "}
-            <form action={formAction} style={{ padding: 10 }}>
-              <div className="flex flex-col items-center gap-1">
-                <input type="email" name="email" placeholder="Email" className="border rounded border-slate-300" />
+            <form action={formAction} className="h-full">
+              <div className="flex flex-col items-center justify-center h-full">
+                <input type="email" name="email" placeholder="Email" className="border rounded border-slate-300 mb-1" />
                 <input
                   type="password"
                   name="password"
                   placeholder="Password"
-                  className="border rounded border-slate-300"
+                  className="border rounded border-slate-300 mb-3"
                 />
-
-                <button className={"btn-primary mt-2"} type="submit">
+                <Button primary nativeProps={{ type: "submit" }}>
                   {isPending ? "Logging in" : "Login"}
-                </button>
+                </Button>
               </div>
             </form>
             {state?.error && <div className="text-red-800 text-lg text-center">{state.error}</div>}
