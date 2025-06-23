@@ -1,8 +1,8 @@
-import SearchForm from "@/components/client/SearchForm";
-import MovieList from "@/components/server/MoviesList";
+import SearchForm from "@/components/client/search-form";
+import MovieList from "@/components/server/movies-list";
 import { Suspense } from "react";
-import Pagination from "@/components/client/Pagination";
-import Loading from "@/components/client/Loading";
+import Pagination from "@/components/client/pagination";
+import Loading from "@/components/client/loading";
 
 export default async function Page(props: {
   searchParams?: Promise<{

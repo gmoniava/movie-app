@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import DeleteButton from "@/components/client/DeleteButton";
+import DeleteButton from "@/components/client/delete-button";
 import { searchMovies } from "@/lib/movies";
 
 const MovieList = async ({ searchParams }: any) => {

@@ -1,7 +1,7 @@
 "use client";
-import Sidebar from "@/components/client/SideBar";
+import Sidebar from "@/components/client/sidebar";
 import React from "react";
-import Toggle from "@/components/client/ThemeToggle";
+import Toggle from "@/components/client/theme-toggle";
 import clsx from "clsx";
 export default function Layout({
   children,
@@ -9,6 +9,7 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [showSidebar, setShowSidebar] = React.useState(false);
+
   return (
     <div lang="en" className="h-full flex ">
       <Sidebar

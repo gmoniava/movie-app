@@ -2,7 +2,7 @@
 
 import { deleteMovie } from "@/actions/movies"; // adjust path
 import { useTransition } from "react";
-import LoadingOverlay from "../LoadingOverlay";
+import LoadingOverlay from "@/components/client/loading-overlay";
 const DeleteButton = ({ movieId }: { movieId: string }) => {
   const [isPending, startTransition] = useTransition();
 
