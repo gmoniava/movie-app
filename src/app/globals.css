@@ -2,21 +2,17 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-bg-default: white;
-  --color-text-primary: black;
+  --color-default-bg: white;
+  --color-default-text: black;
+  --color-btn-primary-bg: #003eab;
+  --color-btn-primary-bg-disabled: lightgray;
 }
 
 @layer base {
   @variant dark {
-    --color-bg-default: #111827;
-    --color-text-primary: white;
+    --color-default-bg: #111827;
+    --color-default-text: white;
+    --color-btn-primary-bg: #7ca2e5;
+    --color-btn-primary-bg-disabled: lightgray;
   }
 }
-
-/* .btn-primary {
-  @apply px-4 rounded bg-blue-500 text-white w-[128px] cursor-pointer;
-}
-
-.btn-secondary {
-  @apply px-4  rounded border border-solid  w-[128px] cursor-pointer;
-} */

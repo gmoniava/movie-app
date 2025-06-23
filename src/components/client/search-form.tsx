@@ -2,6 +2,7 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
+import Button from "@/components/client/button";
 
 export default function Search({ name }: any) {
   const searchParams = useSearchParams();
@@ -72,62 +73,57 @@ export default function Search({ name }: any) {
   return (
     <div>
       <div className="h-full">
-        <form action={formAction} className="w-1/2 mx-auto space-y-4 p-4 border rounded-lg">
+        <form action={formAction} className="space-y-4 p-4">
           <div className="text-xl font-semibold">Search movies</div>
-
           <div>
             <label className="block">Name:</label>
             <input
               type="text"
               name="name"
-              className="border p-2 w-full"
+              className="w-128 border rounded border-slate-300 p-1"
               placeholder="e.g. Inception"
               defaultValue={formState.name}
             />
           </div>
-
           <div>
             <label className="block">Release Year Range:</label>
             <div className="flex gap-2">
               <input
                 type="number"
                 name="release_year_from"
-                className="border p-2 w-full"
+                className="w-63 border rounded border-slate-300 p-1"
                 placeholder="From"
                 defaultValue={formState.release_year_from}
               />
               <input
                 type="number"
                 name="release_year_to"
-                className="border p-2 w-full"
+                className="w-63 border rounded border-slate-300 p-1"
                 placeholder="To"
                 defaultValue={formState.release_year_to}
               />
             </div>
           </div>
-
           <div>
             <label className="block">Actors:</label>
             <input
               type="text"
               name="actor"
-              className="border p-2 w-full"
+              className="w-128 border rounded border-slate-300 p-1"
               placeholder="e.g. Leonardo DiCaprio"
               defaultValue={formState.actor}
             />
           </div>
-
           <div>
             <label className="block">Description:</label>
             <input
               type="text"
               name="description"
-              className="border p-2 w-full"
+              className="w-128 border rounded border-slate-300 p-1"
               placeholder="e.g. This is a drama movie.."
               defaultValue={formState.description}
             />
           </div>
-
           <div>
             <label className="block">Genres:</label>
             <select
@@ -135,7 +131,7 @@ export default function Search({ name }: any) {
               key={[...new Set(formState.genres)].sort().join(",")}
               name="genres"
               multiple
-              className="border p-2 w-full"
+              className="w-128 border rounded border-slate-300 p-1"
               defaultValue={formState.genres}
             >
               <option value="1">Action</option>
@@ -145,10 +141,10 @@ export default function Search({ name }: any) {
               <option value="5">Sci-Fi</option>
             </select>
           </div>
-
-          <button type="submit" className="" disabled={isPending}>
+          {/* <button type="submit">Child</button> */}
+          <Button primary nativeProps={{ type: "submit", disabled: isPending }}>
             {isPending ? "Searching..." : "Search"}
-          </button>
+          </Button>
         </form>
       </div>
     </div>

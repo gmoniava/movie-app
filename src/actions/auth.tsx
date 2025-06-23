@@ -34,12 +34,25 @@ export async function login(previousState: any, formData: FormData) {
   // Find user in the database
   const userFromDb = await getUser(user.email);
   if (!userFromDb) {
-    return { error: "User not found" };
+    return {
+      error: "User not found",
+      data: {
+        pwd: user.password,
+        email: user.email,
+      },
+    };
   }
 
   // Do the passwords match?
   const passWordsMatch = bcrypt.compareSync(user.password, userFromDb.password);
-  if (!passWordsMatch) return { error: "Wrong credentials" };
+  if (!passWordsMatch)
+    return {
+      error: "Wrong credentials",
+      data: {
+        pwd: user.password,
+        email: user.email,
+      },
+    };
 
   // We authenticated the user, now let's create a session.
   // The session will exist for 1 hour.
@@ -48,4 +61,11 @@ export async function login(previousState: any, formData: FormData) {
 
   // Save the session in a cookie
   (await cookies()).set("session", session, { expires, httpOnly: true });
+
+  return {
+    data: {
+      pwd: user.password,
+      email: user.email,
+    },
+  };
 }

@@ -14,7 +14,7 @@ export default function Page(props: any) {
   return (
     <div
       className={clsx(
-        "w-64 bg-bg-default fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100 z-1 -left-64 opacity-0",
+        "w-64 fixed bg-default-bg border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100 z-999000 -left-64 opacity-0",
         {
           "left-0 opacity-100 p-5": props.isOpen,
         }
