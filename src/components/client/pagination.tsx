@@ -29,6 +29,8 @@ export default function Pagination(props: any) {
     };
 
     fetchData();
+    // TODO pagination has bug now. If you are on page X and delete movie,
+    // searchParams does not change, hence this effect is not called again.
   }, [searchParams]);
 
   const handlePageChange = (newPage: number) => {
