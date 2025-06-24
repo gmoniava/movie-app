@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
 
-export const PAGE_SIZE = 5;
+export const PAGE_SIZE = 2;
 export default function Pagination(props: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -25,7 +25,6 @@ export default function Pagination(props: any) {
       }
 
       const json = await response.json();
-
       setTotal(json.total);
     };
 
@@ -50,7 +49,7 @@ export default function Pagination(props: any) {
   const isNextDisabled = optimisticPage >= total / PAGE_SIZE;
   const isPrevDisabled = optimisticPage === 1;
   const totalPages = Math.ceil(total / PAGE_SIZE);
-
+  console.log(total, PAGE_SIZE);
   return (
     <div className="flex justify-between items-center mt-4" data-pending={pending ? "" : undefined}>
       <button

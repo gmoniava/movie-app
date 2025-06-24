@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 2;
 
 export type Movie = {
   id: number;
@@ -45,7 +45,7 @@ export async function searchMovies(
   searchParams: URLSearchParams
 ): Promise<{ data: Movie[]; total: number } | { error: string }> {
   try {
-    await delay(5000);
+    await delay(90);
 
     const raw = {
       name: searchParams.get("name") ?? "",

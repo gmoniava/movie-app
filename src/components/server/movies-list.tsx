@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import DeleteButton from "@/components/client/delete-button";
 import { searchMovies } from "@/lib/movies";
+import Button from "@/components/client/button";
 
 const MovieList = async ({ searchParams }: any) => {
   const urlSearchParams = new URLSearchParams();
@@ -21,39 +22,45 @@ const MovieList = async ({ searchParams }: any) => {
   if ("error" in searchResults) return <div>{searchResults.error}</div>;
 
   return (
-    <div className="mt-[5px] p-4 bg-gray-50 rounded-lg shadow-md">
+    <div className="mt-[5px] p-4 shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Movies</h2>
+
       {searchResults.data.length === 0 ? (
         <p className="text-center text-gray-500">No movies found.</p>
       ) : (
-        <ul className="space-y-4">
-          {searchResults.data?.map((movie: any) => (
-            <li
-              key={movie.id}
-              className="bg-white p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200 flex items-center"
-            >
-              <div className="flex-1">
-                {" "}
-                <h3 className="text-xl font-bold text-gray-800">
-                  {movie.name} ({movie.release_year})
-                </h3>
-                <p className="text-gray-600">
-                  <strong>Actors:</strong> {movie.actors}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Genres:</strong> {movie.genres.join(", ")}
-                </p>
-                <p className="text-gray-800 mt-2">{movie.description}</p>
-              </div>
-              <div className="flex items-center gap-1">
-                <Link className="btn-secondary" href={`/edit-movie/${movie.id}`}>
-                  Edit movie
-                </Link>
-                <DeleteButton movieId={movie.id} />
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+            <thead>
+              <tr className="bg-gray-100 text-left text-gray-600 text-sm uppercase tracking-wider">
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Release Year</th>
+                <th className="px-4 py-2">Actors</th>
+                <th className="px-4 py-2">Genres</th>
+                <th className="px-4 py-2">Description</th>
+                <th className="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchResults.data.map((movie: any) => (
+                <tr key={movie.id} className="border-t border-gray-200 hover:bg-gray-50">
+                  <td className="px-4 py-2 font-medium text-gray-800">{movie.name}</td>
+                  <td className="px-4 py-2 text-gray-700">{movie.release_year}</td>
+                  <td className="px-4 py-2 text-gray-700">{movie.actors}</td>
+                  <td className="px-4 py-2 text-gray-700">{movie?.genres?.join(", ")}</td>
+                  <td className="px-4 py-2 text-gray-700">{movie.description}</td>
+                  <td className="px-4 py-2">
+                    <div className="flex items-center gap-2">
+                      <Link className="px-4 py-1 rounded border border-gray-200" href={`/edit-movie/${movie.id}`}>
+                        Edit
+                      </Link>
+                      <DeleteButton movieId={movie.id} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

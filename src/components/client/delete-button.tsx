@@ -3,6 +3,8 @@
 import { deleteMovie } from "@/actions/movies"; // adjust path
 import { useTransition } from "react";
 import LoadingOverlay from "@/components/client/loading-overlay";
+import Button from "@/components/client/button";
+
 const DeleteButton = ({ movieId }: { movieId: string }) => {
   const [isPending, startTransition] = useTransition();
 
@@ -21,9 +23,16 @@ const DeleteButton = ({ movieId }: { movieId: string }) => {
 
   return (
     <>
-      <button onClick={handleDelete} disabled={isPending} className="btn-secondary text-red-600">
+      <Button
+        danger
+        nativeProps={{
+          onClick: () => {
+            handleDelete();
+          },
+        }}
+      >
         Delete
-      </button>
+      </Button>
       {isPending && <LoadingOverlay />}
     </>
   );
