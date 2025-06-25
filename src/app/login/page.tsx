@@ -1,10 +1,10 @@
 "use client";
-
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/actions/auth";
 import { useAuth } from "@/components/client/auth-provider";
 import Button from "@/components/client/button";
+
 export default function Login() {
   const { checkAuth } = useAuth();
   const { push } = useRouter();
