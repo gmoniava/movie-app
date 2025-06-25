@@ -13,8 +13,10 @@ export default function Login() {
     const result = await login(prevState, formData);
 
     if (!result?.error) {
-      await checkAuth(); // Refresh context after server sets session
-      push("/"); // Navigate after everything is ready
+      // Server has set the session, we also need to get that update in our auth context.
+      await checkAuth();
+      // Navigate after everything is ready
+      push("/");
     }
 
     return result;
