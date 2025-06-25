@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
+// Seed two tables, one which lists available genres and another which holds relation between a movie and its genres.
 async function seedGenres() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
@@ -13,12 +14,24 @@ async function seedGenres() {
     );
     `;
 
-  await sql`INSERT INTO genres (id, name) VALUES (1, 'Action');`;
-  await sql`INSERT INTO genres (id, name) VALUES (2, 'Comedy');`;
-  await sql`INSERT INTO genres (id, name) VALUES (3, 'Drama');`;
-  await sql`INSERT INTO genres (id, name) VALUES (4, 'Thriller');`;
-  await sql`INSERT INTO genres (id, name) VALUES (5, 'Sci-Fi');`;
+  const genres = [
+    { id: 1, name: "Action" },
+    { id: 2, name: "Comedy" },
+    { id: 3, name: "Drama" },
+    { id: 4, name: "Thriller" },
+    { id: 5, name: "Sci-Fi" },
+  ];
 
+  // Insert possible genres
+  for (const genre of genres) {
+    await sql`
+      INSERT INTO genres (id, name) 
+      VALUES (${genre.id}, ${genre.name})
+      ON CONFLICT (id) DO NOTHING;
+    `;
+  }
+
+  // Create another table to store association between movie and genres
   await sql`CREATE TABLE IF NOT EXISTS movie_genres (
       movie_id UUID,
       genre_id INTEGER,
@@ -37,6 +50,7 @@ const users = [
   },
 ];
 
+// Seed users table
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
@@ -174,11 +188,12 @@ async function seedMovies() {
         description TEXT
       );
     `;
+
   const insertedMovies = await Promise.all(
     movies.map(async (movie: any) => {
       return sql`
             INSERT INTO movies (name, release_year, actors, description)
-            VALUES (${movie.name}, ${movie.year}, ${movie.actors},  ${movie.description})            
+            VALUES (${movie.name}, ${movie.year}, ${movie.actors},  ${movie.description})
           `;
     })
   );
@@ -187,9 +202,9 @@ async function seedMovies() {
 
 export async function GET() {
   try {
-    // await seedGenres();
-    // await seedMovies();
-    // await seedUsers();
+    await seedGenres();
+    await seedMovies();
+    await seedUsers();
     return Response.json({ message: "Database seeded successfully" });
   } catch (error) {
     return Response.json({ error }, { status: 500 });
