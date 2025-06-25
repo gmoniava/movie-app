@@ -17,6 +17,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Database
 This project uses a PostgreSQL database.
-- Create the database and add corresponding `.env` file in root directory of the project (For example see [this](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database) Vercel guide).
+- Create the database and add corresponding `.env` file in root directory of the project (for example see [this](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database) Vercel guide).
 - Visit: [http://localhost:3000/api/seed](http://localhost:3000/api/seed), which will create all required tables and initial data.
  
