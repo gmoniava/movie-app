@@ -97,7 +97,7 @@ export async function searchMovies(
     const offset = (page - 1) * perPage;
     const data: Movie[] = await sql`
     SELECT m.id, m.name, m.release_year, m.actors, m.description,
-           ARRAY_AGG(DISTINCT g.name) AS genres
+           ARRAY_AGG(DISTINCT g.name) FILTER (WHERE g.name IS NOT NULL) AS genres
     FROM movies m
     LEFT JOIN movie_genres mg ON m.id = mg.movie_id
     LEFT JOIN genres g ON mg.genre_id = g.id
@@ -129,7 +129,7 @@ export async function getMovieById(id: string): Promise<Movie | { error: string 
   // Get movie details with aggregated genres
   const movies: Movie[] = await sql`
       SELECT m.id, m.name, m.release_year, m.actors, m.description,
-            ARRAY_AGG(mg.genre_id) AS genres
+            ARRAY_AGG(mg.genre_id) FILTER (WHERE mg.genre_id IS NOT NULL) AS genres
       FROM movies m
       LEFT JOIN movie_genres mg ON m.id = mg.movie_id
       WHERE m.id = ${id}

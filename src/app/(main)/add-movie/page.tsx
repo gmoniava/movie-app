@@ -26,8 +26,11 @@ export default function Page(props: any) {
     data.append("release_year", form.release_year);
     data.append("actors", form.actors);
     data.append("description", form.description);
-    form.genres.forEach((genre: any) => data.append("genres", genre));
-
+    if (Array.isArray(form.genres)) {
+      form.genres.forEach((genre: any) => {
+        data.append("genres", genre.toString());
+      });
+    }
     startTransition(async () => {
       try {
         // Are we in edit mode or add mode?
