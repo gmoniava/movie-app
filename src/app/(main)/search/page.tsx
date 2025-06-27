@@ -3,7 +3,7 @@ import MovieList from "@/components/server/movies-list";
 import { Suspense } from "react";
 import Pagination from "@/components/client/pagination";
 import Loading from "@/components/client/loading";
-
+import PaginatedMoviesList from "@/components/server/paginated-movies-list";
 export default async function Page(props: {
   searchParams?: Promise<{
     query?: string;
@@ -12,14 +12,11 @@ export default async function Page(props: {
 }) {
   const searchParams = await props.searchParams;
   return (
-    <div className=" h-full overflow-auto  ">
+    <div className="h-full overflow-auto">
       <SearchForm />
-
       <Suspense key={JSON.stringify(searchParams)} fallback={<Loading />}>
-        <MovieList searchParams={searchParams} />
+        <PaginatedMoviesList searchParams={searchParams} />
       </Suspense>
-
-      <Pagination />
     </div>
   );
 }

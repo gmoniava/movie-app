@@ -4,28 +4,12 @@ import DeleteButton from "@/components/client/delete-button";
 import { searchMovies } from "@/lib/movies";
 import Button from "@/components/client/button";
 
-const MovieList = async ({ searchParams }: any) => {
-  const urlSearchParams = new URLSearchParams();
-
-  // Convert searchParams to URLSearchParams
-  for (const key in searchParams) {
-    const value = searchParams[key];
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else if (value !== undefined) {
-      urlSearchParams.set(key, value);
-    }
-  }
-
-  const searchResults = await searchMovies(urlSearchParams);
-
-  if ("error" in searchResults) return <div>{searchResults.error}</div>;
-
+const MovieList = async ({ searchResults }: any) => {
   return (
     <div className="mt-[5px] p-4 shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Movies</h2>
 
-      {searchResults.data.length === 0 ? (
+      {searchResults.data?.length === 0 ? (
         <p className="text-center text-gray-500">No movies found.</p>
       ) : (
         <div className="overflow-x-auto">
@@ -41,7 +25,7 @@ const MovieList = async ({ searchParams }: any) => {
               </tr>
             </thead>
             <tbody>
-              {searchResults.data.map((movie: any) => (
+              {searchResults.data?.map((movie: any) => (
                 <tr key={movie.id} className="border-t border-gray-200 hover:bg-gray-50">
                   <td className="px-4 py-2 font-medium text-gray-800">{movie.name}</td>
                   <td className="px-4 py-2 text-gray-700">{movie.release_year}</td>
@@ -53,7 +37,7 @@ const MovieList = async ({ searchParams }: any) => {
                       <Link className="px-4 py-1 rounded border border-gray-200" href={`/edit-movie/${movie.id}`}>
                         Edit
                       </Link>
-                      <DeleteButton movieId={movie.id} />
+                      <DeleteButton movieId={movie.id} total={searchResults.total} />
                     </div>
                   </td>
                 </tr>

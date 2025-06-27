@@ -4,34 +4,16 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
 
 export const PAGE_SIZE = 2;
-export default function Pagination(props: any) {
+export default function Pagination({ total }: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
 
   // Get the current page from the URL search params
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
-  const [optimisticPage, setOptimisticPage] = useOptimistic(page);
+  const [optimisticPage, setOptimisticPage] = useOptimistic(currentPage);
   const [pending, startTransition] = useTransition();
-  const [total, setTotal] = React.useState<number>(0);
-
-  // We basically want to get total here
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`api/movies?${searchParams.toString()}`);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-
-      const json = await response.json();
-      setTotal(json.total);
-    };
-
-    fetchData();
-    // TODO pagination has bug now. If you are on page X and delete movie,
-    // searchParams does not change, hence this effect is not called again.
-  }, [searchParams]);
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams);
@@ -50,8 +32,8 @@ export default function Pagination(props: any) {
 
   const isNextDisabled = optimisticPage >= total / PAGE_SIZE;
   const isPrevDisabled = optimisticPage === 1;
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-  console.log(total, PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
   return (
     <div className="flex justify-between items-center mt-4" data-pending={pending ? "" : undefined}>
       <button
