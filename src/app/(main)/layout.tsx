@@ -2,13 +2,14 @@
 import Sidebar from "@/components/client/sidebar";
 import React from "react";
 import Toggle from "@/components/client/theme-toggle";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import clsx from "clsx";
 export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [showSidebar, setShowSidebar] = React.useState(false);
+  const [showSidebar, setShowSidebar] = useLocalStorage("movie-app", false);
 
   return (
     <div lang="en" className="h-full flex ">

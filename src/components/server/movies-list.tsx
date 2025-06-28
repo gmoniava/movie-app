@@ -3,19 +3,20 @@ import Link from "next/link";
 import DeleteButton from "@/components/client/delete-button";
 import { searchMovies } from "@/lib/movies";
 import Button from "@/components/client/button";
+import { getButtonClassNames } from "@/utils";
 
 const MovieList = async ({ searchResults }: any) => {
   return (
     <div className="mt-[5px] p-4 shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-700">Movies</h2>
+      <h2 className="text-2xl font-semibold mb-4 ">Movies</h2>
 
       {searchResults.data?.length === 0 ? (
-        <p className="text-center text-gray-500">No movies found.</p>
+        <p className="text-center ">No movies found.</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+          <table className="min-w-full border border-gray-200 rounded-lg shadow-sm">
             <thead>
-              <tr className="bg-gray-100 text-left text-gray-600 text-sm uppercase tracking-wider">
+              <tr className="text-left text-sm uppercase tracking-wider">
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Release Year</th>
                 <th className="px-4 py-2">Actors</th>
@@ -26,15 +27,15 @@ const MovieList = async ({ searchResults }: any) => {
             </thead>
             <tbody>
               {searchResults.data?.map((movie: any) => (
-                <tr key={movie.id} className="border-t border-gray-200 hover:bg-gray-50">
-                  <td className="px-4 py-2 font-medium text-gray-800">{movie.name}</td>
-                  <td className="px-4 py-2 text-gray-700">{movie.release_year}</td>
-                  <td className="px-4 py-2 text-gray-700">{movie.actors}</td>
-                  <td className="px-4 py-2 text-gray-700">{movie?.genres?.join(", ")}</td>
-                  <td className="px-4 py-2 text-gray-700">{movie.description}</td>
+                <tr key={movie.id} className="border-t border-gray-200 ">
+                  <td className="px-4 py-2 font-medium ">{movie.name}</td>
+                  <td className="px-4 py-2 ">{movie.release_year}</td>
+                  <td className="px-4 py-2 ">{movie.actors}</td>
+                  <td className="px-4 py-2 ">{movie?.genres?.join(", ")}</td>
+                  <td className="px-4 py-2 ">{movie.description}</td>
                   <td className="px-4 py-2">
                     <div className="flex items-center gap-2">
-                      <Link className="px-4 py-1 rounded border border-gray-200" href={`/edit-movie/${movie.id}`}>
+                      <Link className={getButtonClassNames()} href={`/edit-movie/${movie.id}`}>
                         Edit
                       </Link>
                       <DeleteButton movieId={movie.id} total={searchResults.total} />
