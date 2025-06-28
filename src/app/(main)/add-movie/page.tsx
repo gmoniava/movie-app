@@ -2,6 +2,7 @@
 
 import { addMovie, editMovie } from "@/actions/movies";
 import React, { useState, useTransition } from "react";
+import Button from "@/components/client/button";
 
 const emptyForm = { name: "", release_year: "", actors: "", description: "", genres: [] };
 
@@ -63,8 +64,8 @@ export default function Page(props: any) {
   };
 
   return (
-    <div className="h-full">
-      <form onSubmit={handleSubmit} className="w-1/2 mx-auto space-y-4 p-4 border rounded-lg">
+    <div className="h-full p-5">
+      <form onSubmit={handleSubmit} className="w-1/2 space-y-4 ">
         <div className="text-xl font-semibold">{props.movie ? "Edit movie" : "Add new movie"}</div>
 
         <div>
@@ -74,7 +75,7 @@ export default function Page(props: any) {
             name="name"
             value={form.name}
             onChange={handleChange}
-            className="border p-2 w-full"
+            className="input-default w-full"
             required
             disabled={isPending}
           />
@@ -86,7 +87,7 @@ export default function Page(props: any) {
             name="release_year"
             value={form.release_year}
             onChange={handleChange}
-            className="border p-2 w-full"
+            className="input-default w-full"
             required
             disabled={isPending}
           />
@@ -98,7 +99,7 @@ export default function Page(props: any) {
             name="actors"
             value={form.actors}
             onChange={handleChange}
-            className="border p-2 w-full"
+            className="input-default w-full"
             required
             disabled={isPending}
           />
@@ -109,7 +110,7 @@ export default function Page(props: any) {
             name="description"
             value={form.description}
             onChange={handleChange}
-            className="border p-2 w-full"
+            className="input-default w-full"
             required
             disabled={isPending}
           />
@@ -121,7 +122,7 @@ export default function Page(props: any) {
             multiple
             value={form.genres}
             onChange={handleChange}
-            className="border p-2 w-full"
+            className="input-default w-full"
             disabled={isPending}
           >
             <option value="1">Action</option>
@@ -131,9 +132,9 @@ export default function Page(props: any) {
             <option value="5">Sci-Fi</option>
           </select>
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded" disabled={isPending}>
+        <Button primary nativeProps={{ type: "submit", disabled: isPending, style: { width: 150 } }}>
           {isPending ? (props.movie ? "Editing..." : "Adding") : props.movie ? "Edit Movie" : "Add Movie"}
-        </button>
+        </Button>
       </form>
 
       {message && <p className="mt-4 text-center text-lg">{message}</p>}

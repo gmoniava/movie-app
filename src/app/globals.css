@@ -44,3 +44,11 @@
 @utility btn-primary-bg-disabled {
   background-color: var(--btn-primary-bg-disabled);
 }
+
+@layer components {
+  .input-default {
+    border: 1px solid #cbd5e1;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+  }
+}

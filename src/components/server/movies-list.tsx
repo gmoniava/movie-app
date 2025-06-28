@@ -1,9 +1,6 @@
 import React from "react";
-import Link from "next/link";
 import DeleteButton from "@/components/client/delete-button";
-import { searchMovies } from "@/lib/movies";
-import Button from "@/components/client/button";
-import { getButtonClassNames } from "@/components/client/button";
+import ButtonLink from "../client/button-link";
 
 const MovieList = async ({ searchResults }: any) => {
   return (
@@ -35,9 +32,7 @@ const MovieList = async ({ searchResults }: any) => {
                   <td className="px-4 py-2 ">{movie.description}</td>
                   <td className="px-4 py-2">
                     <div className="flex items-center gap-2">
-                      <Link className={getButtonClassNames()} href={`/edit-movie/${movie.id}`}>
-                        Edit
-                      </Link>
+                      <ButtonLink nativeProps={{ href: `/edit-movie/${movie.id}` }}>Edit</ButtonLink>
                       <DeleteButton movieId={movie.id} total={searchResults.total} />
                     </div>
                   </td>

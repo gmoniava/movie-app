@@ -13,8 +13,9 @@ export default function Login() {
     const result = await login(prevState, formData);
 
     if (!result?.error) {
-      // Server has set the session, we also need to get that update in our auth context.
+      // Server has set the session, we also need to update the authentication context on the client.
       await checkAuth();
+
       // Navigate after everything is ready
       push("/");
     }
