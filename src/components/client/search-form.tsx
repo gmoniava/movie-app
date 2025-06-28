@@ -176,6 +176,16 @@ export default function Search({}: any) {
                 <label className="block">Genres:</label>
                 <Select
                   isMulti
+                  styles={{
+                    control: (baseStyles, state) => ({
+                      ...baseStyles,
+                      backgroundColor: "default-bg",
+                    }),
+                    option: (baseStyles, state) => ({
+                      ...baseStyles,
+                      color: "black",
+                    }),
+                  }}
                   options={genreOptions}
                   value={selectedGenres}
                   onChange={(selected) => setSelectedGenres(selected || [])}
