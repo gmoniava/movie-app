@@ -20,7 +20,7 @@ This project uses a PostgreSQL database.
 - Create the database and add corresponding `.env` file in root directory of the project (for example see [this](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database) Vercel guide).
 - Visit: [http://localhost:3000/api/seed](http://localhost:3000/api/seed), which will create all required tables and initial data.
  
-## Environment Variables
+### Environment Variables
 
 - `SECRET_KEY`: This project requires a secret key for signing/verifying purposes (e.g., JWT, encryption, etc.). It is configured using the `SECRET_KEY` environment variable. If `SECRET_KEY` is not set and the app is running in development mode, a default value (`test-secret-key`) will be used.
 
