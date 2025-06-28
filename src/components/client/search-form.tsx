@@ -21,8 +21,8 @@ function updateSearchParamsFromFormData(
   params: URLSearchParams;
   formState: {
     name: string;
-    release_year_from: string;
-    release_year_to: string;
+    releaseYearFrom: string;
+    releaseYearTo: string;
     actor: string;
     description: string;
     genres: string[];
@@ -41,15 +41,15 @@ function updateSearchParamsFromFormData(
   const params = new URLSearchParams(currentSearchParams);
 
   const name = getValueFromFormData("name");
-  const release_year_from = getValueFromFormData("release_year_from");
-  const release_year_to = getValueFromFormData("release_year_to");
+  const releaseYearFrom = getValueFromFormData("releaseYearFrom");
+  const releaseYearTo = getValueFromFormData("releaseYearTo");
   const actor = getValueFromFormData("actor");
   const description = getValueFromFormData("description");
   const genres = selectedGenres.map((g) => g.value);
 
   setOrDeleteSearchParamsVal(params, "name", name);
-  setOrDeleteSearchParamsVal(params, "release_year_from", release_year_from);
-  setOrDeleteSearchParamsVal(params, "release_year_to", release_year_to);
+  setOrDeleteSearchParamsVal(params, "releaseYearFrom", releaseYearFrom);
+  setOrDeleteSearchParamsVal(params, "releaseYearTo", releaseYearTo);
   setOrDeleteSearchParamsVal(params, "actor", actor);
   setOrDeleteSearchParamsVal(params, "description", description);
 
@@ -62,8 +62,8 @@ function updateSearchParamsFromFormData(
     params,
     formState: {
       name,
-      release_year_from,
-      release_year_to,
+      releaseYearFrom,
+      releaseYearTo,
       actor,
       description,
       genres,
@@ -82,15 +82,15 @@ export default function Search({}: any) {
 
     return {
       name: getParam("name"),
-      release_year_from: getParam("release_year_from"),
-      release_year_to: getParam("release_year_to"),
+      releaseYearFrom: getParam("releaseYearFrom"),
+      releaseYearTo: getParam("releaseYearTo"),
       actor: getParam("actor"),
       description: getParam("description"),
       genres,
     };
   };
 
-  // For genres component we need to store state separately
+  // Genres component we will make controlled
   const [selectedGenres, setSelectedGenres] = React.useState<readonly any[]>(
     genreOptions.filter((opt) => getInitialFormStateFromURL().genres.includes(opt.value))
   );
@@ -140,17 +140,17 @@ export default function Search({}: any) {
             <div className="flex gap-2">
               <input
                 type="number"
-                name="release_year_from"
+                name="releaseYearFrom"
                 className="w-1/2 input-default"
                 placeholder="From"
-                defaultValue={formState.release_year_from}
+                defaultValue={formState.releaseYearFrom}
               />
               <input
                 type="number"
-                name="release_year_to"
+                name="releaseYearTo"
                 className="w-1/2 input-default"
                 placeholder="To"
-                defaultValue={formState.release_year_to}
+                defaultValue={formState.releaseYearTo}
               />
             </div>
           </div>

@@ -7,24 +7,16 @@ import { revalidatePath } from "next/cache";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
-export type Movie = {
-  id: number;
-  name: string;
-  release_year: number;
-  actors: string;
-  description: string;
-  genres: string[];
-};
 const AddFormSchema = z.object({
   name: z.string(),
-  release_year: z.coerce.number(),
+  releaseYear: z.coerce.number(),
   actors: z.string(),
   description: z.string(),
   genres: z.array(z.coerce.number()),
 });
 const EditFormSchema = z.object({
   name: z.string(),
-  release_year: z.coerce.number(),
+  releaseYear: z.coerce.number(),
   actors: z.string(),
   description: z.string(),
   genres: z.array(z.coerce.number()),
@@ -60,9 +52,9 @@ export async function addMovie(formData: FormData) {
     return { error: "Unauthorized" };
   }
 
-  const { name, release_year, actors, description, genres } = AddFormSchema.parse({
+  const { name, releaseYear, actors, description, genres } = AddFormSchema.parse({
     name: formData.get("name"),
-    release_year: formData.get("release_year"),
+    releaseYear: formData.get("releaseYear"),
     actors: formData.get("actors"),
     description: formData.get("description"),
     genres: formData.getAll("genres"),
@@ -73,7 +65,7 @@ export async function addMovie(formData: FormData) {
     // Insert movie into movies table
     const result = await tx`
         INSERT INTO movies (name, release_year, actors, description) 
-        VALUES (${name}, ${release_year}, ${actors}, ${description})
+        VALUES (${name}, ${releaseYear}, ${actors}, ${description})
         RETURNING id;
       `;
 
@@ -100,9 +92,9 @@ export async function editMovie(formData: FormData) {
     return { error: "Unauthorized" };
   }
 
-  const { name, release_year, actors, description, genres, movieId } = EditFormSchema.parse({
+  const { name, releaseYear, actors, description, genres, movieId } = EditFormSchema.parse({
     name: formData.get("name"),
-    release_year: formData.get("release_year"),
+    releaseYear: formData.get("releaseYear"),
     actors: formData.get("actors"),
     description: formData.get("description"),
     genres: formData.getAll("genres"),
@@ -114,7 +106,7 @@ export async function editMovie(formData: FormData) {
     // Update movie in the movies table
     await tx`
         UPDATE movies
-        SET name = ${name}, release_year = ${release_year}, actors = ${actors}, description = ${description}
+        SET name = ${name}, release_year = ${releaseYear}, actors = ${actors}, description = ${description}
         WHERE id = ${movieId};
       `;
 

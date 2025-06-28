@@ -10,7 +10,7 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 export type Movie = {
   id: number;
   name: string;
-  release_year: number;
+  releaseYear: number;
   actors: string;
   description: string;
   genres: string[];
@@ -30,8 +30,8 @@ const SearchSchema = z.object({
     const arr = Array.isArray(value) ? value : [value];
     return arr.map((s) => parseInt(s, 10));
   }),
-  release_year_from: z.coerce.number().nullable(),
-  release_year_to: z.coerce.number().nullable(),
+  releaseYearFrom: z.coerce.number().nullable(),
+  releaseYearTo: z.coerce.number().nullable(),
   actor: z.string().nullable(),
   description: z.string().nullable(),
 });
@@ -51,18 +51,17 @@ export async function searchMovies(
       page: searchParams.get("page"),
       perPage: searchParams.get("perPage"),
       genres: searchParams.getAll("genres"),
-      release_year_from: searchParams.get("release_year_from"),
-      release_year_to: searchParams.get("release_year_to"),
+      releaseYearFrom: searchParams.get("releaseYearFrom"),
+      releaseYearTo: searchParams.get("releaseYearTo"),
       actor: searchParams.get("actor"),
       description: searchParams.get("description"),
     };
 
-    const { name, page, perPage, genres, release_year_from, release_year_to, actor, description } =
-      SearchSchema.parse(raw);
+    const { name, page, perPage, genres, releaseYearFrom, releaseYearTo, actor, description } = SearchSchema.parse(raw);
 
     const nameQuery = name ? sql`AND m.name ILIKE ${"%" + name + "%"}` : sql``;
-    const releaseYearFromQuery = release_year_from ? sql`AND m.release_year >= ${release_year_from}` : sql``;
-    const releaseYearToQuery = release_year_to ? sql`AND m.release_year <= ${release_year_to}` : sql``;
+    const releaseYearFromQuery = releaseYearFrom ? sql`AND m.release_year >= ${releaseYearFrom}` : sql``;
+    const releaseYearToQuery = releaseYearTo ? sql`AND m.release_year <= ${releaseYearTo}` : sql``;
     const actorQuery = actor ? sql`AND m.actors ILIKE ${"%" + actor + "%"}` : sql``;
     const descriptionQuery = description ? sql`AND m.description ILIKE ${"%" + description + "%"}` : sql``;
 
@@ -95,7 +94,7 @@ export async function searchMovies(
     // Get paginated data
     const offset = (page - 1) * perPage;
     const data: Movie[] = await sql`
-    SELECT m.id, m.name, m.release_year, m.actors, m.description,
+    SELECT m.id, m.name, m.release_year AS "releaseYear", m.actors, m.description,
            ARRAY_AGG(DISTINCT g.name) FILTER (WHERE g.name IS NOT NULL) AS genres
     FROM movies m
     LEFT JOIN movie_genres mg ON m.id = mg.movie_id
@@ -127,7 +126,7 @@ export async function getMovieById(id: string): Promise<Movie | { error: string 
 
   // Get movie details with aggregated genres
   const movies: Movie[] = await sql`
-      SELECT m.id, m.name, m.release_year, m.actors, m.description,
+      SELECT m.id, m.name, m.release_year as "releaseYear", m.actors, m.description,
             ARRAY_AGG(mg.genre_id) FILTER (WHERE mg.genre_id IS NOT NULL) AS genres
       FROM movies m
       LEFT JOIN movie_genres mg ON m.id = mg.movie_id

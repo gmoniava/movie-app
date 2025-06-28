@@ -3,13 +3,26 @@
 import { addMovie, editMovie } from "@/actions/movies";
 import React, { useState, useTransition } from "react";
 import Button from "@/components/client/button";
+import Select from "react-select";
 
-const emptyForm = { name: "", release_year: "", actors: "", description: "", genres: [] };
+const emptyForm = { name: "", releaseYear: "", actors: "", description: "", genres: [] };
+const genreOptions = [
+  { value: "1", label: "Action" },
+  { value: "2", label: "Comedy" },
+  { value: "3", label: "Drama" },
+  { value: "4", label: "Thriller" },
+  { value: "5", label: "Sci-Fi" },
+];
 
 export default function Page(props: any) {
   const [form, setForm] = useState(
     // In edit mode, pre-fill the form with movie data that is passed as props.
-    props.movie ? { ...props.movie, genres: props.movie.genres?.map((t: any) => t.toString()) } : emptyForm
+    props.movie
+      ? {
+          ...props.movie,
+          genres: genreOptions.filter((opt) => props.movie.genres?.map((t: any) => t.toString()).includes(opt.value)),
+        }
+      : emptyForm
   );
 
   const [isPending, startTransition] = useTransition();
@@ -21,15 +34,15 @@ export default function Page(props: any) {
     // Reset message before submitting
     setMessage("");
 
-    // Converting to form data for submission because the backend expects form-data.
+    // Covert react state to form data because backend expects form data.
     const data = new FormData();
     data.append("name", form.name);
-    data.append("release_year", form.release_year);
+    data.append("releaseYear", form.releaseYear);
     data.append("actors", form.actors);
     data.append("description", form.description);
     if (Array.isArray(form.genres)) {
       form.genres.forEach((genre: any) => {
-        data.append("genres", genre.toString());
+        data.append("genres", genre.value.toString());
       });
     }
     startTransition(async () => {
@@ -41,6 +54,7 @@ export default function Page(props: any) {
           await editMovie(data);
           setMessage("Movie edited successfully!");
         } else {
+          // We are creating a new movie.
           await addMovie(data);
           setMessage("Movie added successfully!");
           setForm(emptyForm);
@@ -53,14 +67,8 @@ export default function Page(props: any) {
   };
 
   const handleChange = (e: any) => {
-    const { name, value, type, selectedOptions } = e.target;
-    if (type === "select-multiple") {
-      // Select-multiple returns a collection of selected options as HTMLCollection.
-      const values = Array.from(selectedOptions, (option: any) => option.value);
-      setForm({ ...form, [name]: values });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   return (
@@ -84,8 +92,8 @@ export default function Page(props: any) {
           <label className="block">Release Year:</label>
           <input
             type="number"
-            name="release_year"
-            value={form.release_year}
+            name="releaseYear"
+            value={form.releaseYear}
             onChange={handleChange}
             className="input-default w-full"
             required
@@ -117,20 +125,26 @@ export default function Page(props: any) {
         </div>
         <div>
           <label className="block">Genres:</label>
-          <select
-            name="genres"
-            multiple
+          <Select
+            isMulti
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                backgroundColor: "default-bg",
+              }),
+              option: (baseStyles, state) => ({
+                ...baseStyles,
+                color: "black",
+              }),
+            }}
+            options={genreOptions}
             value={form.genres}
-            onChange={handleChange}
-            className="input-default w-full"
-            disabled={isPending}
-          >
-            <option value="1">Action</option>
-            <option value="2">Comedy</option>
-            <option value="3">Drama</option>
-            <option value="4">Thriller</option>
-            <option value="5">Sci-Fi</option>
-          </select>
+            onChange={(selected) => setForm({ ...form, genres: selected })}
+            className="w-full"
+            classNamePrefix="react-select"
+            placeholder="Select genres"
+            name="genres"
+          />
         </div>
         <Button primary nativeProps={{ type: "submit", disabled: isPending, style: { width: 150 } }}>
           {isPending ? (props.movie ? "Editing..." : "Adding") : props.movie ? "Edit Movie" : "Add Movie"}

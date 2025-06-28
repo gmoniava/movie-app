@@ -26,7 +26,7 @@ const MovieList = async ({ searchResults }: any) => {
               {searchResults.data?.map((movie: any) => (
                 <tr key={movie.id} className="border-t border-gray-200 ">
                   <td className="px-4 py-2 font-medium ">{movie.name}</td>
-                  <td className="px-4 py-2 ">{movie.release_year}</td>
+                  <td className="px-4 py-2 ">{movie.releaseYear}</td>
                   <td className="px-4 py-2 ">{movie.actors}</td>
                   <td className="px-4 py-2 ">{movie?.genres?.join(", ")}</td>
                   <td className="px-4 py-2 ">{movie.description}</td>

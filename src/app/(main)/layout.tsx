@@ -12,7 +12,7 @@ export default function Layout({
   const [showSidebar, setShowSidebar] = useLocalStorage("movie-app", false);
 
   return (
-    <div lang="en" className="h-full flex ">
+    <div lang="en" className="h-full flex">
       <Sidebar
         isOpen={showSidebar}
         close={() => {
