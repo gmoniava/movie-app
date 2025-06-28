@@ -54,7 +54,7 @@ export default function Page(props: any) {
         <Link
           href="/"
           className={clsx("cursor-pointer", {
-            "bg-sky-100 text-blue-600": pathname === "/",
+            underline: pathname === "/",
           })}
         >
           Home
@@ -63,12 +63,7 @@ export default function Page(props: any) {
 
       <div>
         {" "}
-        <Link
-          href="/add-movie"
-          className={clsx("cursor-pointer", {
-            "bg-sky-100 text-blue-600": pathname === "/add-movie",
-          })}
-        >
+        <Link href="/add-movie" className={clsx("cursor-pointer", {})}>
           Add movie
         </Link>
       </div>
@@ -77,7 +72,7 @@ export default function Page(props: any) {
         <Link
           href="/search"
           className={clsx("cursor-pointer", {
-            "bg-sky-100 text-blue-600": pathname === "/search",
+            underline: pathname === "/search",
           })}
         >
           Search movies
