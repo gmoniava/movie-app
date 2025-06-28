@@ -42,5 +42,5 @@
 }
 
 @utility btn-primary-bg-disabled {
-  background-color: var(--btn-primary-bg);
+  background-color: var(--btn-primary-bg-disabled);
 }
