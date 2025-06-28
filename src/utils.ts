@@ -1,5 +1,7 @@
 import clsx from "clsx";
 
+export const PAGE_SIZE = 10;
+
 // Extract because we use this for links too to style them like buttons
 export function getButtonClassNames({
   primary,

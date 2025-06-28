@@ -7,8 +7,6 @@ import { revalidatePath } from "next/cache";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
-const PAGE_SIZE = 5;
-
 export type Movie = {
   id: number;
   name: string;

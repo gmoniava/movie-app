@@ -3,10 +3,9 @@ import { NextResponse } from "next/server"; // To send a response
 import { z } from "zod";
 import { getSession } from "./auth";
 import { revalidatePath } from "next/cache";
+import { PAGE_SIZE } from "@/utils";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
-
-const PAGE_SIZE = 2;
 
 export type Movie = {
   id: number;

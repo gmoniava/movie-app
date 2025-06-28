@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoadingOverlay from "@/components/client/loading-overlay";
 import Button from "@/components/client/button";
-import { PAGE_SIZE } from "./pagination";
+import { PAGE_SIZE } from "@/utils";
 
 const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) => {
   const router = useRouter();

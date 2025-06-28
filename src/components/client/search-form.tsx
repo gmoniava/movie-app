@@ -3,15 +3,81 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Button from "@/components/client/button";
+import Select from "react-select";
 
-export default function Search({ name }: any) {
+const genreOptions = [
+  { value: "1", label: "Action" },
+  { value: "2", label: "Comedy" },
+  { value: "3", label: "Drama" },
+  { value: "4", label: "Thriller" },
+  { value: "5", label: "Sci-Fi" },
+];
+
+function updateSearchParamsFromFormData(
+  formData: FormData,
+  currentSearchParams: URLSearchParams,
+  selectedGenres: readonly any[]
+): {
+  params: URLSearchParams;
+  formState: {
+    name: string;
+    release_year_from: string;
+    release_year_to: string;
+    actor: string;
+    description: string;
+    genres: string[];
+  };
+} {
+  const getValueFromFormData = (key: string) => (formData.get(key) as string) || "";
+
+  const setOrDeleteSearchParamsVal = (params: URLSearchParams, key: string, value: string) => {
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+  };
+
+  const params = new URLSearchParams(currentSearchParams);
+
+  const name = getValueFromFormData("name");
+  const release_year_from = getValueFromFormData("release_year_from");
+  const release_year_to = getValueFromFormData("release_year_to");
+  const actor = getValueFromFormData("actor");
+  const description = getValueFromFormData("description");
+  const genres = selectedGenres.map((g) => g.value);
+
+  setOrDeleteSearchParamsVal(params, "name", name);
+  setOrDeleteSearchParamsVal(params, "release_year_from", release_year_from);
+  setOrDeleteSearchParamsVal(params, "release_year_to", release_year_to);
+  setOrDeleteSearchParamsVal(params, "actor", actor);
+  setOrDeleteSearchParamsVal(params, "description", description);
+
+  params.delete("genres");
+  genres.forEach((genre) => {
+    if (genre) params.append("genres", genre);
+  });
+
+  return {
+    params,
+    formState: {
+      name,
+      release_year_from,
+      release_year_to,
+      actor,
+      description,
+      genres,
+    },
+  };
+}
+export default function Search({}: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
 
+  // The search form supports reading search parameters from URL (although only on mount)
   const getInitialFormStateFromURL = () => {
     const getParam = (key: string) => searchParams.get(key) || "";
-
     const genres = searchParams.getAll("genres");
 
     return {
@@ -24,47 +90,18 @@ export default function Search({ name }: any) {
     };
   };
 
+  // For genres component we need to store state separately
+  const [selectedGenres, setSelectedGenres] = React.useState<readonly any[]>(
+    genreOptions.filter((opt) => getInitialFormStateFromURL().genres.includes(opt.value))
+  );
+
   const handleSearch = (prevState: any, formData: FormData): any => {
-    // Basically we need to convert the FormData into a URLSearchParams object
-    const params = new URLSearchParams(searchParams);
-
-    const getValue = (key: string) => (formData.get(key) as string) || "";
-
-    const name = getValue("name");
-    const release_year_from = getValue("release_year_from");
-    const release_year_to = getValue("release_year_to");
-    const actor = getValue("actor");
-    const description = getValue("description");
-    const genres = formData.getAll("genres").map((g) => g.toString());
-
-    const setOrDelete = (key: string, value: string) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    };
-
-    setOrDelete("name", name);
-    setOrDelete("release_year_from", release_year_from);
-    setOrDelete("release_year_to", release_year_to);
-    setOrDelete("actor", actor);
-    setOrDelete("description", description);
-
-    params.delete("genres");
-    genres.forEach((genre) => {
-      if (genre) params.append("genres", genre);
-    });
+    const { params, formState } = updateSearchParamsFromFormData(formData, searchParams, selectedGenres);
 
     push(`${pathname}?${params.toString()}`);
 
     return {
-      name,
-      release_year_from,
-      release_year_to,
-      actor,
-      description,
-      genres,
+      ...formState,
     };
   };
 
@@ -72,79 +109,88 @@ export default function Search({ name }: any) {
 
   return (
     <div>
-      <div className="h-full">
-        <form action={formAction} className="space-y-4 p-4">
-          <div className="text-xl font-semibold">Search movies</div>
-          <div>
-            <label className="block">Name:</label>
-            <input
-              type="text"
-              name="name"
-              className="w-128 border rounded border-slate-300 p-1"
-              placeholder="e.g. Inception"
-              defaultValue={formState.name}
-            />
-          </div>
-          <div>
-            <label className="block">Release Year Range:</label>
-            <div className="flex gap-2">
+      <div className="h-full p-5">
+        <div className="text-xl font-semibold mb-5">Search movies</div>
+
+        <form action={formAction} className="flex flex-col gap-4 md:flex-row md:gap-8">
+          {/* First column */}
+          <div className="flex flex-col gap-4 w-full md:w-1/2">
+            <div>
+              <label className="block">Name:</label>
               <input
-                type="number"
-                name="release_year_from"
-                className="w-63 border rounded border-slate-300 p-1"
-                placeholder="From"
-                defaultValue={formState.release_year_from}
-              />
-              <input
-                type="number"
-                name="release_year_to"
-                className="w-63 border rounded border-slate-300 p-1"
-                placeholder="To"
-                defaultValue={formState.release_year_to}
+                type="text"
+                name="name"
+                className="w-full border rounded border-slate-300 p-1"
+                placeholder="e.g. Inception"
+                defaultValue={formState.name}
               />
             </div>
+
+            <div>
+              <label className="block">Actors:</label>
+              <input
+                type="text"
+                name="actor"
+                className="w-full border rounded border-slate-300 p-1"
+                placeholder="e.g. Leonardo DiCaprio"
+                defaultValue={formState.actor}
+              />
+            </div>
+
+            <div>
+              <label className="block">Release Year Range:</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  name="release_year_from"
+                  className="w-1/2 border rounded border-slate-300 p-1"
+                  placeholder="From"
+                  defaultValue={formState.release_year_from}
+                />
+                <input
+                  type="number"
+                  name="release_year_to"
+                  className="w-1/2 border rounded border-slate-300 p-1"
+                  placeholder="To"
+                  defaultValue={formState.release_year_to}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block">Actors:</label>
-            <input
-              type="text"
-              name="actor"
-              className="w-128 border rounded border-slate-300 p-1"
-              placeholder="e.g. Leonardo DiCaprio"
-              defaultValue={formState.actor}
-            />
+
+          {/* Second column */}
+          <div className="flex flex-col gap-4 w-full md:w-1/2">
+            <div>
+              <label className="block">Description:</label>
+              <input
+                type="text"
+                name="description"
+                className="w-full border rounded border-slate-300 p-1"
+                placeholder="e.g. This is a drama movie.."
+                defaultValue={formState.description}
+              />
+            </div>
+
+            <div>
+              <label className="block">Genres:</label>
+              <Select
+                isMulti
+                options={genreOptions}
+                value={selectedGenres}
+                onChange={(selected) => setSelectedGenres(selected || [])}
+                className="w-full"
+                classNamePrefix="react-select"
+                placeholder="Select genres"
+                name="genres"
+              />
+            </div>
+
+            <div className="text-right pt-10">
+              <Button primary nativeProps={{ type: "submit", disabled: isPending, style: { width: 150 } }}>
+                {isPending ? "Searching..." : "Search"}
+              </Button>
+            </div>
           </div>
-          <div>
-            <label className="block">Description:</label>
-            <input
-              type="text"
-              name="description"
-              className="w-128 border rounded border-slate-300 p-1"
-              placeholder="e.g. This is a drama movie.."
-              defaultValue={formState.description}
-            />
-          </div>
-          <div>
-            <label className="block">Genres:</label>
-            <select
-              // Had to add this because the select was not picking up the defaultValue unlike inputs during a re-render.
-              key={[...new Set(formState.genres)].sort().join(",")}
-              name="genres"
-              multiple
-              className="w-128 border rounded border-slate-300 p-1"
-              defaultValue={formState.genres}
-            >
-              <option value="1">Action</option>
-              <option value="2">Comedy</option>
-              <option value="3">Drama</option>
-              <option value="4">Thriller</option>
-              <option value="5">Sci-Fi</option>
-            </select>
-          </div>
-          {/* <button type="submit">Child</button> */}
-          <Button primary nativeProps={{ type: "submit", disabled: isPending }}>
-            {isPending ? "Searching..." : "Search"}
-          </Button>
         </form>
       </div>
     </div>

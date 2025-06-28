@@ -3,7 +3,8 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
 import Button from "./button";
-export const PAGE_SIZE = 2;
+import { PAGE_SIZE } from "@/utils";
+
 export default function Pagination({ total }: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
