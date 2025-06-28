@@ -3,7 +3,7 @@ import Link from "next/link";
 import DeleteButton from "@/components/client/delete-button";
 import { searchMovies } from "@/lib/movies";
 import Button from "@/components/client/button";
-import { getButtonClassNames } from "@/utils";
+import { getButtonClassNames } from "@/components/client/button";
 
 const MovieList = async ({ searchResults }: any) => {
   return (
