@@ -2,57 +2,47 @@
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import React, { useOptimistic, useTransition } from "react";
-
+import Button from "./button";
 export const PAGE_SIZE = 2;
 export default function Pagination({ total }: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
 
-  // Get the current page from the URL search params
-  const currentPage = parseInt(searchParams.get("page") || "1", 10);
-
-  const [optimisticPage, setOptimisticPage] = useOptimistic(currentPage);
+  const [optimisticPage, setOptimisticPage] = useOptimistic(parseInt(searchParams.get("page") || "1", 10));
   const [pending, startTransition] = useTransition();
 
   const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", newPage.toString());
-
     startTransition(() => {
+      // Generate URLSearchParams with the new page
+      const params = new URLSearchParams(searchParams);
+      params.set("page", newPage.toString());
+
       // Make sure we see the new page immediately
       // even if the server response is delayed
       setOptimisticPage(newPage);
 
-      // Now push the new page to the URL
+      // Now also push the new page to the URL
       // This will trigger a re-render and fetch the new data
       push(`${pathname}?${params.toString()}`);
     });
   };
 
-  const isNextDisabled = optimisticPage >= total / PAGE_SIZE;
-  const isPrevDisabled = optimisticPage === 1;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const isPrevDisabled = optimisticPage === 1;
+  const isNextDisabled = optimisticPage >= totalPages;
 
   return (
-    <div className="flex justify-between items-center mt-4" data-pending={pending ? "" : undefined}>
-      <button
-        onClick={() => handlePageChange(optimisticPage - 1)}
-        disabled={isPrevDisabled}
-        className={`btn-secondary ${isPrevDisabled ? "opacity-50" : ""}`}
-      >
-        Previous
-      </button>
+    <div className="flex justify-center gap-5 items-center mt-4" data-pending={pending ? "" : undefined}>
+      <Button nativeProps={{ onClick: () => handlePageChange(optimisticPage - 1), disabled: isPrevDisabled }}>
+        &lt;
+      </Button>
 
       <span className="text-gray-600">Page {`${optimisticPage}/${totalPages}`}</span>
 
-      <button
-        onClick={() => handlePageChange(optimisticPage + 1)}
-        disabled={isNextDisabled}
-        className={`btn-secondary ${isNextDisabled ? "opacity-50" : ""}`}
-      >
-        Next
-      </button>
+      <Button nativeProps={{ onClick: () => handlePageChange(optimisticPage + 1), disabled: isNextDisabled }}>
+        &gt;
+      </Button>
     </div>
   );
 }

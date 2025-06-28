@@ -12,7 +12,7 @@ export function getButtonClassNames({
 } = {}) {
   return clsx("px-4 py-1 rounded border btn-default-text", danger ? "border-red-400" : "border-gray-200", {
     "btn-primary-bg btn-primary-text border-none": primary,
-    "btn-primary-bg-disabled opacity-50 cursor-not-allowed": disabled,
+    "opacity-50 cursor-not-allowed": disabled,
     "cursor-pointer": !disabled,
   });
 }
