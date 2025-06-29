@@ -34,7 +34,7 @@ export default function Page(props: any) {
     // Reset message before submitting
     setMessage("");
 
-    // Covert react state to form data because backend expects form data.
+    // Convert react state to form data because backend expects form data.
     const data = new FormData();
     data.append("name", form.name);
     data.append("releaseYear", form.releaseYear);
