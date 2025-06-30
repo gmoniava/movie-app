@@ -3,7 +3,7 @@
 
 @layer theme {
   :root {
-    --default-bg: white;
+    --default-bg: #f4f4f9;
     --default-text: black;
     --btn-primary-bg: #003eab;
     --btn-primary-bg-disabled: lightgray;

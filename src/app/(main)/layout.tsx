@@ -27,7 +27,7 @@ export default function Layout({
         })}
       >
         <Header toggleSideBar={() => setShowSideBar(!showSidebar)} />
-        <div className="p-[5px] flex-1 min-h-0">{children}</div>
+        <div className="flex-1 min-h-0">{children}</div>
       </div>
     </div>
   );

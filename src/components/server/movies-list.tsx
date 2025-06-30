@@ -4,7 +4,7 @@ import ButtonLink from "../client/button-link";
 
 const MovieList = async ({ searchResults }: any) => {
   return (
-    <div className="mt-[5px] p-4 shadow-md">
+    <div className="p-4 shadow-md">
       <h2 className="text-2xl font-semibold mb-4 ">Movies</h2>
 
       {searchResults.data?.length === 0 ? (
