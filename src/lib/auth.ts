@@ -1,7 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 
 const secretKey = process.env.SECRET_KEY || (process.env.NODE_ENV === "development" ? "test-secret-key" : undefined);
-
 const key = new TextEncoder().encode(secretKey);
 
 export async function verify(input: string): Promise<any> {

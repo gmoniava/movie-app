@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 
 const AddFormSchema = z.object({
   name: z.string(),

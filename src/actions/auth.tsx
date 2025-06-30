@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { sign, verify } from "@/lib/auth";
 import { z } from "zod";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 
 const UserSchema = z.object({
   email: z.string(),

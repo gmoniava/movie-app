@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import bcrypt from "bcryptjs";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 
 // Seed two tables, one which lists available genres and another which holds relation between a movie and its genres.
 async function seedGenres() {
