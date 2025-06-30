@@ -17,7 +17,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Database
 This project uses a PostgreSQL database.
-- Create the database and add corresponding `.env` file in root directory of the project (for example see [this](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database) Vercel guide).
+- Create the database (for example see [this](https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database) Vercel guide)
+- Set up environment variables (see [Environment Setup](#environment-setup) for instructions on creating the `.env` file)
 - Visit: [http://localhost:3000/api/seed](http://localhost:3000/api/seed), which will create all required tables and initial data.
  
 ### Authentication
@@ -28,7 +29,16 @@ user: demo@gmail.com
 pass: 123456
 ```
 
-### Environment Variables
+### Environment Setup
 
-- `SECRET_KEY`: This project requires a secret key for signing/verifying purposes (e.g., JWT, encryption, etc.). It is configured using the `SECRET_KEY` environment variable. If `SECRET_KEY` is not set and the app is running in development mode, a default value (`test-secret-key`) will be used.
+- Copy the `.env.example` file and rename it to `.env`.
+- Edit `.env` to add your own configuration values.
+- Do not commit your `.env` file — it contains sensitive info.
+
+#### Environment Variables
+
+Below is description of existing variables listed in `.env.example`.
+
+- `DATABASE_URL`: The PostgreSQL connection string used by the app to connect to the database.
+- `SECRET_KEY`: Secret key used for signing and verifying tokens or encrypting data. If not set in development, a default test-secret-key will be used.
 
