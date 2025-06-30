@@ -41,17 +41,17 @@ async function seedGenres() {
     );`;
 }
 
-const users = [
-  {
-    id: "410544b2-4001-4271-9855-fec4b6a6442a",
-    name: "User",
-    email: "user@gmail.com",
-    password: "123456",
-  },
-];
-
 // Seed users table
 async function seedUsers() {
+  const users = [
+    {
+      id: "410544b2-4001-4271-9855-fec4b6a6442a",
+      name: "User",
+      email: "demo@gmail.com",
+      password: "123456",
+    },
+  ];
+
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await sql`
     CREATE TABLE IF NOT EXISTS users (
