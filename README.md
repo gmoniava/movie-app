@@ -40,5 +40,5 @@ pass: 123456
 Below is description of existing variables listed in `.env.example`.
 
 - `DATABASE_URL`: The PostgreSQL connection string used by the app to connect to the database.
-- `SECRET_KEY`: Secret key used for signing and verifying tokens or encrypting data. If not set in development, a default test-secret-key will be used.
+- `SECRET_KEY`: Secret key used for signing and verifying tokens or encrypting data. If not set in development, a default `test-secret-key` will be used.
 
