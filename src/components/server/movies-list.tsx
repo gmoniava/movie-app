@@ -18,18 +18,18 @@ const MovieList = async ({ searchResults }: any) => {
                 <th className="px-4 py-2">Release Year</th>
                 <th className="px-4 py-2">Actors</th>
                 <th className="px-4 py-2">Genres</th>
-                <th className="px-4 py-2">Description</th>
+                <th className="px-4 py-2  hidden md:table-cell">Description</th>
                 <th className="px-4 py-2">Actions</th>
               </tr>
             </thead>
             <tbody>
               {searchResults.data?.map((movie: any) => (
                 <tr key={movie.id} className="border-t border-gray-200 ">
-                  <td className="px-4 py-2 font-medium ">{movie.name}</td>
-                  <td className="px-4 py-2 ">{movie.releaseYear}</td>
-                  <td className="px-4 py-2 ">{movie.actors}</td>
-                  <td className="px-4 py-2 ">{movie?.genres?.join(", ")}</td>
-                  <td className="px-4 py-2 ">{movie.description}</td>
+                  <td className="px-4 py-2 font-medium">{movie.name}</td>
+                  <td className="px-4 py-2">{movie.releaseYear}</td>
+                  <td className="px-4 py-2">{movie.actors}</td>
+                  <td className="px-4 py-2">{movie?.genres?.join(", ")}</td>
+                  <td className="px-4 py-2 hidden md:table-cell">{movie.description}</td>
                   <td className="px-4 py-2">
                     <div className="flex items-center gap-2">
                       <ButtonLink nativeProps={{ href: `/edit-movie/${movie.id}` }}>Edit</ButtonLink>

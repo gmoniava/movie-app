@@ -110,7 +110,7 @@ export default function Search({}: any) {
   return (
     <div>
       <div className="h-full p-4">
-        <form action={formAction} className="max-w-xl space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
+        <form action={formAction} className="w-2/5 space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
           <div className="text-xl font-semibold mb-5">Search movies</div>
 
           <div>

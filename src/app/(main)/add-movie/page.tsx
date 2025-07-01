@@ -75,7 +75,7 @@ export default function Page(props: any) {
 
   return (
     <div className="h-full p-4">
-      <form onSubmit={handleSubmit} className="max-w-xl space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
+      <form onSubmit={handleSubmit} className="w-2/5 space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
         <div className="text-xl font-semibold">{props.movie ? "Edit movie" : "Add new movie"}</div>
 
         <div>
