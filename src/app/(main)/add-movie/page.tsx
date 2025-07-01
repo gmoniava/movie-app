@@ -142,7 +142,7 @@ export default function Page(props: any) {
             onChange={(selected) => setForm({ ...form, genres: selected })}
             className="w-full"
             classNamePrefix="react-select"
-            placeholder="Select genres"
+            placeholder=""
             name="genres"
           />
         </div>

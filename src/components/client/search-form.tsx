@@ -115,24 +115,12 @@ export default function Search({}: any) {
 
           <div>
             <label className="block">Name:</label>
-            <input
-              type="text"
-              name="name"
-              className="w-full input-default"
-              placeholder="e.g. Inception"
-              defaultValue={formState.name}
-            />
+            <input type="text" name="name" className="w-full input-default" defaultValue={formState.name} />
           </div>
 
           <div>
             <label className="block">Actors:</label>
-            <input
-              type="text"
-              name="actor"
-              className="w-full input-default"
-              placeholder="e.g. Leonardo DiCaprio"
-              defaultValue={formState.actor}
-            />
+            <input type="text" name="actor" className="w-full input-default" defaultValue={formState.actor} />
           </div>
 
           <div>
@@ -161,7 +149,6 @@ export default function Search({}: any) {
               type="text"
               name="description"
               className="w-full input-default"
-              placeholder="e.g. This is a drama movie.."
               defaultValue={formState.description}
             />
           </div>
@@ -185,7 +172,7 @@ export default function Search({}: any) {
               onChange={(selected) => setSelectedGenres(selected || [])}
               className="w-full"
               classNamePrefix="react-select"
-              placeholder="Select genres"
+              placeholder=""
               name="genres"
             />
           </div>

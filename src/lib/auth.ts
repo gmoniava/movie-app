@@ -10,19 +10,24 @@ export async function verify(input: string): Promise<any> {
   return payload;
 }
 export async function getSession() {
-  // Do this otherwise we get error from Nextjs about not being able to access next/headers outside app folder
-  // (https://github.com/vercel/next.js/issues/49757#issuecomment-1911540734)
-  const { cookies } = await import("next/headers");
+  try {
+    // Do this otherwise we get error from Nextjs about not being able to access next/headers outside app folder
+    // (https://github.com/vercel/next.js/issues/49757#issuecomment-1911540734)
+    const { cookies } = await import("next/headers");
+    const session = (await cookies()).get("session")?.value;
+    if (!session) return null;
 
-  const session = (await cookies()).get("session")?.value;
-  if (!session) return null;
-  return verify(session);
+    return verify(session);
+  } catch (error) {
+    console.error("Session error:", error);
+    return null; // fail silently and treat as unauthenticated
+  }
 }
 
 export async function sign(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("1hr")
+    .setExpirationTime(payload.expires)
     .sign(key);
 }
