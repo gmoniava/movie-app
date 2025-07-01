@@ -20,6 +20,7 @@ export default function Page(props: any) {
     props.movie
       ? {
           ...props.movie,
+          // React select uses options and values of same type, so we need to get full option object based on the value.
           genres: genreOptions.filter((opt) => props.movie.genres?.map((t: any) => t.toString()).includes(opt.value)),
         }
       : emptyForm
@@ -28,6 +29,7 @@ export default function Page(props: any) {
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState("");
 
+  // Handle adding or editing a movie.
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
