@@ -4,27 +4,23 @@ import { addMovie, editMovie } from "@/actions/movies";
 import React, { useState, useTransition } from "react";
 import Button from "@/components/client/button";
 import Select from "react-select";
-
+import { useOptions } from "@/hooks/useOptions";
 const emptyForm = { name: "", releaseYear: "", actors: "", description: "", genres: [] };
-const genreOptions = [
-  { value: "1", label: "Action" },
-  { value: "2", label: "Comedy" },
-  { value: "3", label: "Drama" },
-  { value: "4", label: "Thriller" },
-  { value: "5", label: "Sci-Fi" },
-];
 
 export default function Page(props: any) {
-  const [form, setForm] = useState(
-    // In edit mode, pre-fill the form with movie data that is passed as props.
-    props.movie
-      ? {
-          ...props.movie,
-          // React select uses options and values of same type, so we need to get full option object based on the value.
-          genres: genreOptions.filter((opt) => props.movie.genres?.map((t: any) => t.toString()).includes(opt.value)),
-        }
-      : emptyForm
-  );
+  const { options: genreOptions } = useOptions("genres");
+  const [form, setForm] = useState<Record<string, any>>({ ...emptyForm });
+
+  // In edit mode, fill form data with the movie we are editing.
+  React.useEffect(() => {
+    if (props.movie) {
+      setForm({
+        ...props.movie,
+        // React select uses options and values of same type, so we need to get full option object based on the value.
+        genres: genreOptions.filter((opt) => props.movie.genres?.includes(opt.value)),
+      });
+    }
+  }, [genreOptions, props.movie]);
 
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState("");

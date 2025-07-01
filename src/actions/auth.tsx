@@ -23,9 +23,10 @@ export async function logout() {
 }
 
 export async function login(previousState: any, formData: FormData) {
+  let user;
   try {
     // Parse the user from the request
-    const user = UserSchema.parse({ email: formData.get("email") || "", password: formData.get("password") || "" });
+    user = UserSchema.parse({ email: formData.get("email") || "", password: formData.get("password") || "" });
 
     // Find user in the database
     const userFromDb = await getUser(user.email);
@@ -69,8 +70,7 @@ export async function login(previousState: any, formData: FormData) {
     return {
       error: "Something went wrong. Please try again.",
       data: {
-        email: formData.get("email") || "",
-        pwd: formData.get("password") || "",
+        ...user,
       },
     };
   }

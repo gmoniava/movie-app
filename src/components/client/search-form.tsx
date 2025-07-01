@@ -4,14 +4,7 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Button from "@/components/client/button";
 import Select from "react-select";
-
-const genreOptions = [
-  { value: "1", label: "Action" },
-  { value: "2", label: "Comedy" },
-  { value: "3", label: "Drama" },
-  { value: "4", label: "Thriller" },
-  { value: "5", label: "Sci-Fi" },
-];
+import { useOptions } from "@/hooks/useOptions";
 
 function updateSearchParamsFromFormData(
   formData: FormData,
@@ -74,11 +67,12 @@ export default function Search({}: any) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
+  const { options: genreOptions } = useOptions("genres");
 
   // The search form supports reading search parameters from URL (although only on mount)
   const getInitialFormStateFromURL = () => {
     const getParam = (key: string) => searchParams.get(key) || "";
-    const genres = searchParams.getAll("genres");
+    const genres = searchParams.getAll("genres")?.map((g) => parseInt(g));
 
     return {
       name: getParam("name"),
@@ -91,12 +85,15 @@ export default function Search({}: any) {
   };
 
   // Genres component we will make controlled
-  const [selectedGenres, setSelectedGenres] = React.useState<readonly any[]>(
-    genreOptions.filter((opt) => getInitialFormStateFromURL().genres.includes(opt.value))
-  );
+  const [selectedGenres, setSelectedGenres] = React.useState<readonly any[]>();
+
+  React.useEffect(() => {
+    // React select uses options and values of same type, so we need to get full option object based on the value.
+    setSelectedGenres(genreOptions.filter((opt) => getInitialFormStateFromURL().genres.includes(opt.value)));
+  }, [genreOptions]); //eslint-disable-line
 
   const handleSearch = (prevState: any, formData: FormData): any => {
-    const { params, formState } = updateSearchParamsFromFormData(formData, searchParams, selectedGenres);
+    const { params, formState } = updateSearchParamsFromFormData(formData, searchParams, selectedGenres || []);
 
     push(`${pathname}?${params.toString()}`);
 
