@@ -15,13 +15,8 @@ const UserSchema = z.object({
 });
 
 async function getUser(email: string): Promise<any> {
-  try {
-    const user = await sql`SELECT * FROM users WHERE email=${email}`;
-    return user[0];
-  } catch (error) {
-    console.error("Failed to fetch user:", error);
-    throw new Error("Failed to fetch user.");
-  }
+  const user = await sql`SELECT * FROM users WHERE email=${email}`;
+  return user[0];
 }
 export async function logout() {
   (await cookies()).delete("session");

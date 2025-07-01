@@ -48,22 +48,25 @@ export default function Page(props: any) {
       });
     }
     startTransition(async () => {
-      try {
-        // Are we in edit mode or add mode?
-        if (props.movie) {
-          // We are in edit mode, so we need to include the movie ID.
-          data.append("id", form.id);
-          await editMovie(data);
+      // Are we in edit mode or add mode?
+      if (props.movie) {
+        // We are in edit mode, so we need to include the movie ID.
+        data.append("id", form.id);
+        const result = await editMovie(data);
+        if (!result.error) {
           setMessage("Movie edited successfully!");
         } else {
-          // We are creating a new movie.
-          await addMovie(data);
+          setMessage(result.error);
+        }
+      } else {
+        // We are creating a new movie.
+        const result = await addMovie(data);
+        if (!result.error) {
           setMessage("Movie added successfully!");
           setForm(emptyForm);
+        } else {
+          setMessage(result.error);
         }
-      } catch (error) {
-        console.error(error);
-        setMessage("Failed. Please try again.");
       }
     });
   };

@@ -17,7 +17,7 @@ export type Movie = {
 };
 
 const SearchSchema = z.object({
-  name: z.string().trim().max(100, "Search query too long"),
+  name: z.string(),
   page: z.coerce
     .number()
     .nullable()
@@ -26,26 +26,17 @@ const SearchSchema = z.object({
     .number()
     .nullable()
     .transform((val) => val ?? PAGE_SIZE),
-  genres: z.union([z.string(), z.array(z.string())]).transform((value) => {
-    const arr = Array.isArray(value) ? value : [value];
-    return arr.map((s) => parseInt(s, 10));
-  }),
+  genres: z.array(z.coerce.number()),
   releaseYearFrom: z.coerce.number().nullable(),
   releaseYearTo: z.coerce.number().nullable(),
   actor: z.string().nullable(),
   description: z.string().nullable(),
 });
 
-function delay(ms: any) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 export async function searchMovies(
   searchParams: URLSearchParams
 ): Promise<{ data: Movie[]; total: number } | { error: string }> {
   try {
-    await delay(90);
-
     const raw = {
       name: searchParams.get("name") ?? "",
       page: searchParams.get("page"),

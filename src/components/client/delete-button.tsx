@@ -29,8 +29,8 @@ const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) =>
       // Calculate last valid page
       const lastPage = Math.max(1, Math.ceil(newTotal / PAGE_SIZE));
 
+      // If the new last page is less than current page, we need to update the current page too.
       if (currentPage > lastPage) {
-        // Update page param to lastPage and refresh page or reload data
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set("page", String(lastPage));
         router.replace(`?${newParams.toString()}`, { scroll: false });
