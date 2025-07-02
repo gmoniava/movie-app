@@ -3,7 +3,7 @@ import Toggle from "@/components/client/theme-toggle";
 const Header = ({ toggleSideBar }: any) => {
   return (
     <div className="border-b border-b-gray-300 h-14 flex items-center">
-      <div className="cursor-pointer" onClick={toggleSideBar}>
+      <div className="cursor-pointer ml-3" onClick={toggleSideBar}>
         <svg
           width="32"
           height="32"
