@@ -3,7 +3,7 @@ import Sidebar from "@/components/client/sidebar";
 import React from "react";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import clsx from "clsx";
-import Header from "@/components/server/header";
+import Header from "@/components/client/header";
 
 export default function Layout({
   children,
