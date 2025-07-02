@@ -1,3 +1,4 @@
+"use client";
 import Toggle from "@/components/client/theme-toggle";
 
 const Header = ({ toggleSideBar }: any) => {
