@@ -1,185 +1,163 @@
 "use client";
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useTransition } from "react";
 import Button from "@/components/client/button";
 import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
 
-function updateSearchParamsFromFormData(
-  formData: FormData,
-  currentSearchParams: URLSearchParams,
-  selectedGenres: readonly any[]
-): {
-  params: URLSearchParams;
-  formState: {
-    name: string;
-    releaseYearFrom: string;
-    releaseYearTo: string;
-    actor: string;
-    description: string;
-    genres: string[];
-  };
-} {
-  const getValueFromFormData = (key: string) => (formData.get(key) as string) || "";
+type SelectOption = {
+  label: string;
+  value: number;
+};
 
-  const setOrDeleteSearchParamsVal = (params: URLSearchParams, key: string, value: string) => {
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-  };
-
-  const params = new URLSearchParams(currentSearchParams);
-
-  const name = getValueFromFormData("name");
-  const releaseYearFrom = getValueFromFormData("releaseYearFrom");
-  const releaseYearTo = getValueFromFormData("releaseYearTo");
-  const actor = getValueFromFormData("actor");
-  const description = getValueFromFormData("description");
-  const genres = selectedGenres.map((g) => g.value);
-
-  setOrDeleteSearchParamsVal(params, "name", name);
-  setOrDeleteSearchParamsVal(params, "releaseYearFrom", releaseYearFrom);
-  setOrDeleteSearchParamsVal(params, "releaseYearTo", releaseYearTo);
-  setOrDeleteSearchParamsVal(params, "actor", actor);
-  setOrDeleteSearchParamsVal(params, "description", description);
-
-  params.delete("genres");
-  genres.forEach((genre) => {
-    if (genre) params.append("genres", genre);
-  });
-
-  return {
-    params,
-    formState: {
-      name,
-      releaseYearFrom,
-      releaseYearTo,
-      actor,
-      description,
-      genres,
-    },
-  };
-}
-export default function Search({}: any) {
+export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
   const { options: genreOptions } = useOptions("genres");
+  const [isPending, startTransition] = useTransition();
 
-  // The search form supports reading search parameters from URL (although only on mount)
   const getInitialFormStateFromURL = () => {
-    const getParam = (key: string) => searchParams.get(key) || "";
-    const genres = searchParams.getAll("genres")?.map((g) => parseInt(g));
-
+    const getParam = (key: string): string => searchParams.get(key) ?? "";
     return {
       name: getParam("name"),
       releaseYearFrom: getParam("releaseYearFrom"),
       releaseYearTo: getParam("releaseYearTo"),
       actor: getParam("actor"),
       description: getParam("description"),
-      genres,
+      genres: [], // Will be handled separately, see useEffect
     };
   };
 
-  // Genres component we will make controlled
-  const [selectedGenres, setSelectedGenres] = React.useState<readonly any[]>();
+  const [formState, setFormState] = React.useState<Record<string, any>>(getInitialFormStateFromURL);
 
+  // Sync selected genres from URL once genreOptions are available
   React.useEffect(() => {
-    // React select uses options and values of same type, so we need to get full option object based on the value.
-    setSelectedGenres(genreOptions.filter((opt) => getInitialFormStateFromURL().genres.includes(opt.value)));
-  }, [genreOptions]); //eslint-disable-line
+    const genreIds = searchParams.getAll("genres").map((g) => parseInt(g, 10));
 
-  const handleSearch = (prevState: any, formData: FormData): any => {
-    const { params, formState } = updateSearchParamsFromFormData(formData, searchParams, selectedGenres || []);
+    // React Select requires value type to match one of the option objects, so we must map genre IDs from URL to full option objects
+    const selectedGenreOptions = genreOptions.filter((opt) => genreIds.includes(opt.value));
 
-    push(`${pathname}?${params.toString()}`);
+    setFormState((prev) => ({
+      ...prev,
+      genres: selectedGenreOptions,
+    }));
+  }, [genreOptions, searchParams]);
 
-    return {
-      ...formState,
-    };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  const [formState, formAction, isPending] = React.useActionState(handleSearch, getInitialFormStateFromURL());
+  const handleGenresChange = (selected: readonly SelectOption[] | null) => {
+    setFormState((prev: any) => ({ ...prev, genres: selected || [] }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(formState)) {
+      if (key === "genres") continue; // handled below
+      if (value.trim() !== "") {
+        params.set(key, value);
+      }
+    }
+
+    // Append genres (allow multiple)
+    formState.genres.forEach((genre: any) => {
+      params.append("genres", genre.value);
+    });
+
+    startTransition(() => {
+      push(`${pathname}?${params.toString()}`);
+    });
+  };
 
   return (
-    <div>
-      <div className="h-full p-4">
-        <form action={formAction} className="w-2/5 space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
-          <div className="text-xl font-semibold mb-5">Search movies</div>
+    <div className="p-4">
+      <form onSubmit={handleSubmit} className="w-2/5 space-y-6 rounded-2xl shadow-md p-8 border border-gray-200">
+        <div className="text-xl font-semibold mb-5">Search movies</div>
 
-          <div>
-            <label className="block">Name:</label>
-            <input type="text" name="name" className="w-full input-default" defaultValue={formState.name} />
-          </div>
+        <div>
+          <label className="block">Name:</label>
+          <input
+            type="text"
+            name="name"
+            className="w-full input-default"
+            value={formState.name}
+            onChange={handleInputChange}
+          />
+        </div>
 
-          <div>
-            <label className="block">Actors:</label>
-            <input type="text" name="actor" className="w-full input-default" defaultValue={formState.actor} />
-          </div>
+        <div>
+          <label className="block">Actors:</label>
+          <input
+            type="text"
+            name="actor"
+            className="w-full input-default"
+            value={formState.actor}
+            onChange={handleInputChange}
+          />
+        </div>
 
-          <div>
-            <label className="block">Release Year Range:</label>
-            <div className="flex gap-2">
-              <input
-                type="number"
-                name="releaseYearFrom"
-                className="w-1/2 input-default"
-                placeholder="From"
-                defaultValue={formState.releaseYearFrom}
-              />
-              <input
-                type="number"
-                name="releaseYearTo"
-                className="w-1/2 input-default"
-                placeholder="To"
-                defaultValue={formState.releaseYearTo}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block">Description:</label>
+        <div>
+          <label className="block">Release Year Range:</label>
+          <div className="flex gap-2">
             <input
-              type="text"
-              name="description"
-              className="w-full input-default"
-              defaultValue={formState.description}
+              type="number"
+              name="releaseYearFrom"
+              className="w-1/2 input-default"
+              placeholder="From"
+              value={formState.releaseYearFrom}
+              onChange={handleInputChange}
+            />
+            <input
+              type="number"
+              name="releaseYearTo"
+              className="w-1/2 input-default"
+              placeholder="To"
+              value={formState.releaseYearTo}
+              onChange={handleInputChange}
             />
           </div>
+        </div>
 
-          <div>
-            <label className="block">Genres:</label>
-            <Select
-              isMulti
-              styles={{
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  backgroundColor: "default-bg",
-                }),
-                option: (baseStyles, state) => ({
-                  ...baseStyles,
-                  color: "black",
-                }),
-              }}
-              options={genreOptions}
-              value={selectedGenres}
-              onChange={(selected) => setSelectedGenres(selected || [])}
-              className="w-full"
-              classNamePrefix="react-select"
-              placeholder=""
-              name="genres"
-            />
-          </div>
-          <div className="">
-            <Button primary nativeProps={{ type: "submit", disabled: isPending, style: { width: 150 } }}>
-              {isPending ? "Searching..." : "Search"}
-            </Button>
-          </div>
-        </form>
-      </div>
+        <div>
+          <label className="block">Description:</label>
+          <input
+            type="text"
+            name="description"
+            className="w-full input-default"
+            value={formState.description}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label className="block">Genres:</label>
+          <Select
+            isMulti
+            options={genreOptions}
+            value={formState.genres}
+            onChange={handleGenresChange}
+            className="w-full"
+            classNamePrefix="react-select"
+            name="genres"
+            styles={{
+              control: (base) => ({ ...base, backgroundColor: "default-bg" }),
+              option: (base) => ({ ...base, color: "black" }),
+            }}
+          />
+        </div>
+        <div>
+          <Button primary nativeProps={{ type: "submit", disabled: isPending, style: { width: 150 } }}>
+            {isPending ? "Searching..." : "Search"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }
