@@ -1,5 +1,7 @@
 A Next.js App Router movie application allowing users to search, add, edit, and delete movies, backed by a PostgreSQL database.
 
+![Screenshot](src/images/screenshot.png)
+
 ## Getting Started
 
 After cloning the project install dependencies using package manager of your choice. We will use `pnpm`.
