@@ -26,17 +26,18 @@ export default function Search() {
       releaseYearTo: getParam("releaseYearTo"),
       actor: getParam("actor"),
       description: getParam("description"),
-      genres: [], // Will be handled separately, see useEffect
+      genres: [], // Will be handled separately (depends on genreOptions), see useEffect.
     };
   };
 
   const [formState, setFormState] = React.useState<Record<string, any>>(getInitialFormStateFromURL);
 
-  // Sync selected genres from URL once genreOptions are available
+  // Sync selected genres from URL to state (once genreOptions are available).
   React.useEffect(() => {
+    // Extract genre IDs from the URL as integers
     const genreIds = searchParams.getAll("genres").map((g) => parseInt(g, 10));
 
-    // React Select requires value type to match one of the option objects, so we must map genre IDs from URL to full option objects
+    // react-select requires value type to match one of the option objects, so we must map genre IDs from URL to full option objects.
     const selectedGenreOptions = genreOptions.filter((opt) => genreIds.includes(opt.value));
 
     setFormState((prev) => ({
@@ -57,21 +58,26 @@ export default function Search() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Convert formState into URL query parameters
     const params = new URLSearchParams();
 
     for (const [key, value] of Object.entries(formState)) {
-      if (key === "genres") continue; // handled below
+      // handled below
+      if (key === "genres") continue; 
+      
       if (value.trim() !== "") {
         params.set(key, value);
       }
     }
 
-    // Append genres (allow multiple)
+    // Append all selected genres to the params (can have multiple values)
     formState.genres.forEach((genre: any) => {
       params.append("genres", genre.value);
     });
 
+    
     startTransition(() => {
+      // Push the updated URL with query parameters, which triggers a new server fetch
       push(`${pathname}?${params.toString()}`);
     });
   };
