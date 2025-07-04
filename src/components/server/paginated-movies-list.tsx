@@ -6,20 +6,22 @@ import Loading from "@/components/client/loading";
 import { searchMovies } from "@/lib/movies";
 
 export default async function Page({ searchParams }: any) {
-  const urlSearchParams = new URLSearchParams();
-
-  // Convert searchParams to URLSearchParams
-  // because the searchMovies expects URLSearchParams
-  for (const key in searchParams) {
-    const value = searchParams[key];
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else if (value !== undefined) {
-      urlSearchParams.set(key, value);
+  // Converts searchParams object to URLSearchParams
+  const searchParamsToURLSearchParams = (sp: Record<string, any>) => {
+    const urlSearchParams = new URLSearchParams();
+    for (const key in sp) {
+      const value = sp[key];
+      if (Array.isArray(value)) {
+        value.forEach((v) => urlSearchParams.append(key, v));
+      } else if (value !== undefined) {
+        urlSearchParams.set(key, value);
+      }
     }
-  }
 
-  const searchResults = await searchMovies(urlSearchParams);
+    return urlSearchParams;
+  };
+
+  const searchResults = await searchMovies(searchParamsToURLSearchParams(searchParams));
 
   if ("error" in searchResults) return <div>{searchResults.error}</div>;
 

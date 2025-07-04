@@ -2,7 +2,7 @@ import React from "react";
 import DeleteButton from "@/components/client/delete-button";
 import ButtonLink from "../client/button-link";
 
-const MovieList = async ({ searchResults }: any) => {
+const MovieList = ({ searchResults }: any) => {
   return (
     <div className="p-4 shadow-md">
       <h2 className="text-2xl font-semibold mb-4 ">Movies</h2>
