@@ -1,8 +1,5 @@
-import SearchForm from "@/components/client/search-form";
 import MovieList from "@/components/server/movies-list";
-import { Suspense } from "react";
 import Pagination from "@/components/client/pagination";
-import Loading from "@/components/client/loading";
 import { searchMovies } from "@/lib/movies";
 
 export default async function Page({ searchParams }: any) {

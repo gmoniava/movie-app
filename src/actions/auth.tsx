@@ -3,8 +3,7 @@
 import { cookies } from "next/headers";
 import postgres from "postgres";
 import bcrypt from "bcryptjs";
-import { redirect } from "next/navigation";
-import { sign, verify } from "@/lib/auth";
+import { sign } from "@/lib/auth";
 import { z } from "zod";
 
 const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
