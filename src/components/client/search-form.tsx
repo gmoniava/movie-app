@@ -18,22 +18,19 @@ export default function Search() {
   const { options: genreOptions } = useOptions("genres");
   const [isPending, startTransition] = useTransition();
 
-  const getInitialFormStateFromURL = () => {
-    const getParam = (key: string): string => searchParams.get(key) ?? "";
-    return {
-      name: getParam("name"),
-      releaseYearFrom: getParam("releaseYearFrom"),
-      releaseYearTo: getParam("releaseYearTo"),
-      actor: getParam("actor"),
-      description: getParam("description"),
-      genres: [], // Will be handled separately (depends on genreOptions), see useEffect.
-    };
-  };
+  const [formState, setFormState] = React.useState<Record<string, any>>({
+    name: "",
+    releaseYearFrom: "",
+    releaseYearTo: "",
+    actor: "",
+    description: "",
+    genres: [],
+  });
 
-  const [formState, setFormState] = React.useState<Record<string, any>>(getInitialFormStateFromURL);
-
-  // Sync selected genres from URL to state (once genreOptions are available).
+  // Sync URL with react state
   React.useEffect(() => {
+    const getParam = (key: string): string => searchParams.get(key) ?? "";
+
     // Extract genre IDs from the URL as integers
     const genreIds = searchParams.getAll("genres").map((g) => parseInt(g, 10));
 
@@ -41,7 +38,11 @@ export default function Search() {
     const selectedGenreOptions = genreOptions.filter((opt) => genreIds.includes(opt.value));
 
     setFormState((prev) => ({
-      ...prev,
+      name: getParam("name"),
+      releaseYearFrom: getParam("releaseYearFrom"),
+      releaseYearTo: getParam("releaseYearTo"),
+      actor: getParam("actor"),
+      description: getParam("description"),
       genres: selectedGenreOptions,
     }));
   }, [genreOptions, searchParams]);
@@ -62,20 +63,19 @@ export default function Search() {
     const params = new URLSearchParams();
 
     for (const [key, value] of Object.entries(formState)) {
-      // handled below
-      if (key === "genres") continue; 
-      
+      // genres handled separately, see below
+      if (key === "genres") continue;
+
       if (value.trim() !== "") {
         params.set(key, value);
       }
     }
 
-    // Append all selected genres to the params (can have multiple values)
+    // Append all selected genres to the params
     formState.genres.forEach((genre: any) => {
       params.append("genres", genre.value);
     });
 
-    
     startTransition(() => {
       // Push the updated URL with query parameters, which triggers a new server fetch
       push(`${pathname}?${params.toString()}`);

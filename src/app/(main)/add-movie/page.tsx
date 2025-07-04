@@ -5,11 +5,16 @@ import React, { useState, useTransition } from "react";
 import Button from "@/components/client/button";
 import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
-const emptyForm = { name: "", releaseYear: "", actors: "", description: "", genres: [] };
 
 export default function Page(props: any) {
   const { options: genreOptions } = useOptions("genres");
-  const [form, setForm] = useState<Record<string, any>>({ ...emptyForm });
+  const [form, setForm] = useState<Record<string, any>>({
+    name: "",
+    releaseYear: "",
+    actors: "",
+    description: "",
+    genres: [],
+  });
 
   // In edit mode, fill form data with the movie we are editing.
   React.useEffect(() => {
@@ -59,7 +64,13 @@ export default function Page(props: any) {
         const result = await addMovie(data);
         if (!result.error) {
           setMessage("Movie added successfully!");
-          setForm(emptyForm);
+          setForm({
+            name: "",
+            releaseYear: "",
+            actors: "",
+            description: "",
+            genres: [],
+          });
         } else {
           setMessage(result.error);
         }
