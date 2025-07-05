@@ -1,6 +1,6 @@
 "use client";
 import { redirect } from "next/navigation";
-import { logout } from "@/actions/auth";
+import { logout } from "@/server-functions/auth";
 import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

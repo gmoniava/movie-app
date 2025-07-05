@@ -1,6 +1,6 @@
 "use client";
 
-import { addMovie, editMovie } from "@/actions/movies";
+import { addMovie, editMovie } from "@/server-functions/movies";
 import React, { useState, useTransition } from "react";
 import Button from "@/components/client/button";
 import Select from "react-select";

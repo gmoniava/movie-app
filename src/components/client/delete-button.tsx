@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteMovie } from "@/actions/movies"; // adjust path
+import { deleteMovie } from "@/server-functions/movies"; // adjust path
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoadingOverlay from "@/components/client/loading-overlay";
