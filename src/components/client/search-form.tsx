@@ -153,7 +153,7 @@ export default function Search() {
             classNamePrefix="react-select"
             name="genres"
             styles={{
-              control: (base) => ({ ...base, backgroundColor: "default-bg" }),
+              control: (base) => ({ ...base, backgroundColor: "inherit" }),
               option: (base) => ({ ...base, color: "black" }),
             }}
           />

@@ -1,50 +1,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer theme {
-  :root {
-    --default-bg: #f4f4f9;
-    --default-text: black;
-    --btn-primary-bg: #003eab;
-    --btn-primary-bg-disabled: lightgray;
-    --btn-primary-text: white;
-    --btn-default-text: black;
-
-    @variant dark {
-      --default-bg: #111827;
-      --default-text: white;
-      --btn-primary-bg: #003eab;
-      --btn-primary-bg-disabled: lightgray;
-      --btn-primary-text: white;
-      --btn-default-text: white;
-    }
-  }
-}
-
-@utility default-bg {
-  background-color: var(--default-bg);
-}
-
-@utility default-text {
-  color: var(--default-text);
-}
-
-@utility btn-primary-bg {
-  background-color: var(--btn-primary-bg);
-}
-
-@utility btn-primary-text {
-  color: var(--btn-primary-text);
-}
-
-@utility btn-default-text {
-  color: var(--btn-default-text);
-}
-
-@utility btn-primary-bg-disabled {
-  background-color: var(--btn-primary-bg-disabled);
-}
-
 @layer components {
   .input-default {
     border: 1px solid #cbd5e1;

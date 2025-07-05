@@ -140,14 +140,8 @@ export default function Page(props: any) {
           <Select
             isMulti
             styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                backgroundColor: "default-bg",
-              }),
-              option: (baseStyles, state) => ({
-                ...baseStyles,
-                color: "black",
-              }),
+              control: (base) => ({ ...base, backgroundColor: "inherit" }),
+              option: (base) => ({ ...base, color: "black" }),
             }}
             options={genreOptions}
             value={form.genres}
