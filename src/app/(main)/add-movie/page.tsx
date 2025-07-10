@@ -6,17 +6,19 @@ import Button from "@/components/client/button";
 import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
 
+const EMPTY_FORM = {
+  name: "",
+  releaseYear: "",
+  actors: "",
+  description: "",
+  genres: [],
+};
+
 export default function Page(props: any) {
   const { options } = useOptions("genres");
-  const [form, setForm] = useState<Record<string, any>>({
-    name: "",
-    releaseYear: "",
-    actors: "",
-    description: "",
-    genres: [],
-  });
+  const [form, setForm] = useState<Record<string, any>>(EMPTY_FORM);
 
-  // In edit mode, fill form data with the movie we are editing.
+  // In edit mode, fill form data with the movie data passed as props.
   React.useEffect(() => {
     if (props.movie) {
       setForm({
@@ -28,7 +30,7 @@ export default function Page(props: any) {
   }, [options, props.movie]);
 
   const [isPending, startTransition] = useTransition();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string | undefined>("");
 
   // Handle adding or editing a movie.
   const handleSubmit = (e: React.FormEvent) => {
@@ -54,25 +56,15 @@ export default function Page(props: any) {
         // We are in edit mode, so we need to include the movie ID.
         data.append("id", form.id);
         const result = await editMovie(data);
-        if (!result.error) {
-          setMessage("Movie edited successfully!");
-        } else {
-          setMessage(result.error);
-        }
+        setMessage(result.error ? result.error : result.data);
       } else {
         // We are creating a new movie.
         const result = await addMovie(data);
+        setMessage(result.error ? result.error : result.data);
+
+        // If there was no error, reset the form to empty state.
         if (!result.error) {
-          setMessage("Movie added successfully!");
-          setForm({
-            name: "",
-            releaseYear: "",
-            actors: "",
-            description: "",
-            genres: [],
-          });
-        } else {
-          setMessage(result.error);
+          setForm(EMPTY_FORM);
         }
       }
     });

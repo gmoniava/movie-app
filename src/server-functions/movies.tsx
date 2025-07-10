@@ -63,7 +63,6 @@ export async function addMovie(formData: FormData) {
       description: formData.get("description"),
       genres: formData.getAll("genres"),
     });
-
     // Start a safe transaction
     await sql.begin(async (tx) => {
       // Insert movie into movies table
@@ -88,7 +87,7 @@ export async function addMovie(formData: FormData) {
       );
     });
 
-    return {};
+    return { data: "Movie added successfully!" };
   } catch (err: any) {
     console.error("addMovie failed:", err);
     return {
@@ -139,7 +138,7 @@ export async function editMovie(formData: FormData) {
       );
     });
 
-    return {};
+    return { data: "Movie edited successfully!" };
   } catch (err: any) {
     console.error("editMovie failed:", err);
     return {
