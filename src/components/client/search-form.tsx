@@ -15,7 +15,7 @@ export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
-  const { options: genreOptions } = useOptions("genres");
+  const { options } = useOptions("genres");
   const [isPending, startTransition] = useTransition();
 
   const [formState, setFormState] = React.useState<Record<string, any>>({
@@ -35,17 +35,17 @@ export default function Search() {
     const genreIds = searchParams.getAll("genres").map((g) => parseInt(g, 10));
 
     // react-select requires value type to match one of the option objects, so we must map genre IDs from URL to full option objects.
-    const selectedGenreOptions = genreOptions.filter((opt) => genreIds.includes(opt.value));
+    const selectedGenreOptions = options.filter((opt) => genreIds.includes(opt.value));
 
-    setFormState((prev) => ({
+    setFormState({
       name: getParam("name"),
       releaseYearFrom: getParam("releaseYearFrom"),
       releaseYearTo: getParam("releaseYearTo"),
       actor: getParam("actor"),
       description: getParam("description"),
       genres: selectedGenreOptions,
-    }));
-  }, [genreOptions, searchParams]);
+    });
+  }, [options, searchParams]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -146,7 +146,7 @@ export default function Search() {
           <label className="block">Genres:</label>
           <Select
             isMulti
-            options={genreOptions}
+            options={options}
             value={formState.genres}
             onChange={handleGenresChange}
             className="w-full"

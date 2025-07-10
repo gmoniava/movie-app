@@ -7,7 +7,7 @@ import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
 
 export default function Page(props: any) {
-  const { options: genreOptions } = useOptions("genres");
+  const { options } = useOptions("genres");
   const [form, setForm] = useState<Record<string, any>>({
     name: "",
     releaseYear: "",
@@ -22,10 +22,10 @@ export default function Page(props: any) {
       setForm({
         ...props.movie,
         // React select uses options and values of same type, so we need to get full option object based on the value.
-        genres: genreOptions.filter((opt) => props.movie.genres?.includes(opt.value)),
+        genres: options.filter((opt) => props.movie.genres?.includes(opt.value)),
       });
     }
-  }, [genreOptions, props.movie]);
+  }, [options, props.movie]);
 
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState("");
@@ -143,7 +143,7 @@ export default function Page(props: any) {
               control: (base) => ({ ...base, backgroundColor: "inherit" }),
               option: (base) => ({ ...base, color: "black" }),
             }}
-            options={genreOptions}
+            options={options}
             value={form.genres}
             onChange={(selected) => setForm({ ...form, genres: selected })}
             className="w-full"
