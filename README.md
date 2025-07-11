@@ -1,3 +1,5 @@
+## movie-app
+
 A Next.js App Router movie application allowing users to search, add, edit, and delete movies, backed by a PostgreSQL database.
 
 Accompanying blog [post](https://www.gmoniava.com/blog/full-stack-movie-app).
