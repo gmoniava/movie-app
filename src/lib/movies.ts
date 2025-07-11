@@ -111,7 +111,7 @@ export async function searchMovies(
 
 export async function getMovieById(id: string): Promise<Movie | { error: string }> {
   const session = await getSession();
-  if (!session?.user) {
+  if (!session) {
     return { error: "Unauthorized" };
   }
 

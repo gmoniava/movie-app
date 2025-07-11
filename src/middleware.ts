@@ -12,12 +12,12 @@ export default async function middleware(req: NextRequest) {
   const session = await getSession();
 
   // If user is on protected route and has no session redirect to login page.
-  if (isProtectedRoute && !session?.user) {
+  if (isProtectedRoute && !session) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   // No need to be on login page if user is already authenticated
-  if (path === "/login" && session?.user) {
+  if (path === "/login" && session) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 

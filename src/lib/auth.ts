@@ -17,10 +17,10 @@ export async function getSession() {
     const session = (await cookies()).get("session")?.value;
     if (!session) return null;
 
-    return verify(session);
+    return await verify(session);
   } catch (error) {
     console.error("Session error:", error);
-    return null; // fail silently and treat as unauthenticated
+    return null;
   }
 }
 

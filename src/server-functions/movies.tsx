@@ -51,7 +51,7 @@ export async function deleteMovie(movieId: string) {
 
 export async function addMovie(formData: FormData) {
   const session = await getSession();
-  if (!session?.user) {
+  if (!session) {
     return { error: "Unauthorized" };
   }
 
@@ -98,7 +98,7 @@ export async function addMovie(formData: FormData) {
 
 export async function editMovie(formData: FormData) {
   const session = await getSession();
-  if (!session?.user) {
+  if (!session) {
     return { error: "Unauthorized" };
   }
   try {
