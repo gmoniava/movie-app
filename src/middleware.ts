@@ -4,22 +4,36 @@ import { getSession } from "@/lib/auth"; // Adjust import path
 const protectedRoutes = ["/add-movie", "/edit-movie"];
 
 export default async function middleware(req: NextRequest) {
-  // Check if current route is protected
   const path = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.some((pPath: any) => path.startsWith(pPath));
 
-  // Get sesion
   const session = await getSession();
 
-  // If user is on protected route and has no session redirect to login page.
   if (isProtectedRoute && !session) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  // No need to be on login page if user is already authenticated
   if (path === "/login" && session) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    // Match all request paths except for the ones starting with:
+    // - api (API routes)
+    // - _next/static (static files)
+    // - _next/image (image optimization files)
+    // - favicon.ico (favicon file)
+    {
+      source: "/((?!api|_next/static|_next/image|media|fonts|favicon.ico|favicon.png).*)",
+      missing: [
+        // Exclude Server functions
+        // Otherwise NextResponse.redirect used in the middleware does not work with requests initiated by Server functions
+        { type: "header", key: "next-action" },
+      ],
+    },
+  ],
+};
