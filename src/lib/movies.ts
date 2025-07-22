@@ -17,7 +17,7 @@ export type Movie = {
 };
 
 const SearchSchema = z.object({
-  name: z.string(),
+  name: z.string().nullable(),
   page: z.coerce
     .number()
     .nullable()
@@ -38,7 +38,7 @@ export async function searchMovies(
 ): Promise<{ data: Movie[]; total: number } | { error: string }> {
   try {
     const raw = {
-      name: searchParams.get("name") ?? "",
+      name: searchParams.get("name"),
       page: searchParams.get("page"),
       perPage: searchParams.get("perPage"),
       genres: searchParams.getAll("genres"),
