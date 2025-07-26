@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useAuth } from "@/components/client/auth-provider";
+import Overlay from "@/components/client/overlay";
 
 export default function Page(props: any) {
   const { isAuthenticated, checkAuth } = useAuth();
@@ -61,7 +62,7 @@ export default function Page(props: any) {
       {/* Backdrop for mobile */}
       {/* Visible only on mobile when sidebar is open */}
       {props.isOpen && (
-        <div className="pointer-events-auto fixed left-64 top-0 right-0 bottom-0 bg-black opacity-25 flex items-center justify-center z-9050 md:hidden" />
+        <Overlay positionClass="left-64 top-0 bottom-0 right-0" responsiveClass={"md:hidden"} useLoading={false} />
       )}
 
       {/* Close button */}
