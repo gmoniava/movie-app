@@ -50,7 +50,7 @@ const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) =>
       >
         Delete
       </Button>
-      {isPending && <Overlay />}
+      {isPending && <Overlay useLoading />}
     </>
   );
 };
