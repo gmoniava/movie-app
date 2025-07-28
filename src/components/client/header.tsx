@@ -1,5 +1,6 @@
 "use client";
 import Toggle from "@/components/client/theme-toggle";
+import { ClientOnly } from "./client-only";
 
 const Header = ({ toggleSideBar }: any) => {
   return (
@@ -19,7 +20,9 @@ const Header = ({ toggleSideBar }: any) => {
         </svg>
       </div>
       <div className="flex-1 flex items-center justify-end">
-        <Toggle />
+        <ClientOnly>
+          <Toggle />
+        </ClientOnly>
       </div>
     </div>
   );

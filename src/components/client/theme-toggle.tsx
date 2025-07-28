@@ -5,12 +5,6 @@ import React, { useEffect, useState } from "react";
 
 const Toggle = (props: any) => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) return null;
 
   return (
     <div className="flex items-center gap-5">
