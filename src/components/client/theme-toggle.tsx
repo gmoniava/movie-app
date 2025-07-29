@@ -8,7 +8,7 @@ const Toggle = (props: any) => {
   const { theme, setTheme } = useTheme();
   const isClient = useIsClient();
 
-  // To avoid hydration issues, we check if we are on the client side
+  // To avoid hydration issues (since useTheme might use localStorage), we check if we are on the client side
   if (!isClient) return null;
 
   return (
