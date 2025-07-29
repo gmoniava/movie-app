@@ -9,7 +9,8 @@ const Toggle = (props: any) => {
   const isClient = useIsClient();
 
   // To avoid hydration issues, we check if we are on the client side
-  if (!isClient) return;
+  if (!isClient) return null;
+
   return (
     <div className="flex items-center gap-5">
       {" "}

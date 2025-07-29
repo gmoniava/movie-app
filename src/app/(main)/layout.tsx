@@ -15,7 +15,7 @@ export default function Layout({
   const isClient = useIsClient();
 
   // To avoid hydration issues, we check if we are on the client side
-  if (!isClient) return;
+  if (!isClient) return null;
 
   return (
     <div lang="en" className="h-full flex">
