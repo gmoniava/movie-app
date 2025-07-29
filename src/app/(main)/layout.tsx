@@ -1,9 +1,10 @@
 "use client";
 import Sidebar from "@/components/client/sidebar";
 import React from "react";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import Header from "@/components/client/header";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { useIsClient } from "@uidotdev/usehooks";
 
 export default function Layout({
   children,
@@ -11,6 +12,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [showSidebar, setShowSideBar] = useLocalStorage("movie-app", false);
+  const isClient = useIsClient();
+
+  // To avoid hydration issues, we check if we are on the client side
+  if (!isClient) return;
 
   return (
     <div lang="en" className="h-full flex">

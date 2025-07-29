@@ -14,9 +14,7 @@ export default function RootLayout({
     <html lang="en" className={`h-full ${roboto.className}`} suppressHydrationWarning>
       <body className="h-full bg-[#f4f4f9] dark:text-white dark:bg-[#111827]">
         {" "}
-        <Providers>
-          <ClientOnly>{children}</ClientOnly>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
