@@ -1,6 +1,17 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Declare some CSS variables for light and dark themes */
+@layer theme {
+  :root,
+  :host {
+    --bg-base: #f4f4f9;
+    @variant dark {
+      --bg-base: #111827;
+    }
+  }
+}
+
 @layer components {
   .input-default {
     border: 1px solid #cbd5e1;

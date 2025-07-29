@@ -53,7 +53,7 @@ export default function Page(props: any) {
   return (
     <div
       className={clsx(
-        "w-64 bg-[#f4f4f9] dark:bg-[#111827] fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100 -left-64 opacity-0",
+        "w-64 bg-(--bg-base) fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center transition-opacity duration-500 delay-100 -left-64 opacity-0",
         {
           "left-0 opacity-100 p-5": props.isOpen,
         }
