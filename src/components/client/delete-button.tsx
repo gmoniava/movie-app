@@ -3,7 +3,7 @@
 import { deleteMovie } from "@/server-functions/movies"; // adjust path
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Overlay from "@/components/client/overlay";
+import Overlay from "@/components/overlay";
 import Button from "@/components/client/button";
 import { PAGE_SIZE } from "@/utils";
 

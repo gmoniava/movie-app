@@ -1,4 +1,4 @@
-import MovieList from "@/components/server/movies-list";
+import MovieList from "@/components/movies-list";
 import Pagination from "@/components/client/pagination";
 import { searchMovies } from "@/lib/movies";
 

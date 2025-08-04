@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useAuth } from "@/components/client/auth-provider";
-import Overlay from "@/components/client/overlay";
+import Overlay from "@/components/overlay";
 
 export default function Page(props: any) {
   const { isAuthenticated, checkAuth } = useAuth();

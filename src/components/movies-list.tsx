@@ -1,6 +1,6 @@
 import React from "react";
 import DeleteButton from "@/components/client/delete-button";
-import ButtonLink from "../client/button-link";
+import ButtonLink from "./client/button-link";
 
 const MovieList = ({ searchResults }: any) => {
   return (
