@@ -6,7 +6,7 @@ import Button from "@/components/client/button";
 import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
 
-const INITIAL_SEARCH_FORM = {
+const INITIAL_FORM = {
   name: "",
   releaseYear: "",
   actors: "",
@@ -16,7 +16,7 @@ const INITIAL_SEARCH_FORM = {
 
 export default function Page(props: any) {
   const { options } = useOptions("genres");
-  const [form, setForm] = useState<Record<string, any>>(INITIAL_SEARCH_FORM);
+  const [form, setForm] = useState<Record<string, any>>(INITIAL_FORM);
 
   React.useEffect(() => {
     // In edit mode, fill form data with the movie data passed as props.
@@ -66,7 +66,7 @@ export default function Page(props: any) {
 
         // If there was no error, reset the form to empty state.
         if (!result.error) {
-          setForm(INITIAL_SEARCH_FORM);
+          setForm(INITIAL_FORM);
         }
       }
     });

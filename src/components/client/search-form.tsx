@@ -11,6 +11,15 @@ type SelectOption = {
   value: number;
 };
 
+const INITIAL_SEARCH_FORM = {
+  name: "",
+  releaseYearFrom: "",
+  releaseYearTo: "",
+  actor: "",
+  description: "",
+  genres: [],
+};
+
 export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -18,14 +27,9 @@ export default function Search() {
   const { options } = useOptions("genres");
   const [isPending, startTransition] = useTransition();
 
-  const [formState, setFormState] = React.useState<Record<string, any>>({
-    name: "",
-    releaseYearFrom: "",
-    releaseYearTo: "",
-    actor: "",
-    description: "",
-    genres: [],
-  });
+  const [formState, setFormState] = React.useState<Record<string, any>>(INITIAL_SEARCH_FORM);
+
+  console.log(searchParams);
 
   // Sync form state with URL query parameters
   React.useEffect(() => {
