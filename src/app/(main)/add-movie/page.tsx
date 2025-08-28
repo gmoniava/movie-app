@@ -6,7 +6,7 @@ import Button from "@/components/client/button";
 import Select from "react-select";
 import { useOptions } from "@/hooks/useOptions";
 
-const EMPTY_FORM = {
+const INITIAL_SEARCH_FORM = {
   name: "",
   releaseYear: "",
   actors: "",
@@ -16,10 +16,11 @@ const EMPTY_FORM = {
 
 export default function Page(props: any) {
   const { options } = useOptions("genres");
-  const [form, setForm] = useState<Record<string, any>>(EMPTY_FORM);
+  const [form, setForm] = useState<Record<string, any>>(INITIAL_SEARCH_FORM);
 
-  // In edit mode, fill form data with the movie data passed as props.
   React.useEffect(() => {
+    // In edit mode, fill form data with the movie data passed as props.
+    // If we got movie, it means we are in edit mode.
     if (props.movie) {
       setForm({
         ...props.movie,
@@ -30,14 +31,14 @@ export default function Page(props: any) {
   }, [options, props.movie]);
 
   const [isPending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | undefined>("");
+  const [errorMsg, setErrorMsg] = useState<string | undefined>("");
 
   // Handle adding or editing a movie.
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Reset message before submitting
-    setMessage("");
+    // Reset errorMsg before submitting
+    setErrorMsg("");
 
     // Convert react state to form data because backend expects form data.
     const data = new FormData();
@@ -56,15 +57,15 @@ export default function Page(props: any) {
         // We are in edit mode, so we need to include the movie ID.
         data.append("id", form.id);
         const result = await editMovie(data);
-        setMessage(result.error ? result.error : result.data);
+        setErrorMsg(result.error ? result.error : result.data);
       } else {
         // We are creating a new movie.
         const result = await addMovie(data);
-        setMessage(result.error ? result.error : result.data);
+        setErrorMsg(result.error ? result.error : result.data);
 
         // If there was no error, reset the form to empty state.
         if (!result.error) {
-          setForm(EMPTY_FORM);
+          setForm(INITIAL_SEARCH_FORM);
         }
       }
     });
@@ -149,7 +150,7 @@ export default function Page(props: any) {
         </Button>
       </form>
 
-      {message && <p className="mt-4 text-center text-lg">{message}</p>}
+      {errorMsg && <p className="mt-4 text-center text-lg">{errorMsg}</p>}
     </div>
   );
 }
