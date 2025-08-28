@@ -7,6 +7,8 @@ const sql = postgres(process.env.DATABASE_URL!, { ssl: "require" });
 async function seedGenres() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
+  await sql`DROP TABLE IF EXISTS genres CASCADE`;
+
   await sql`
      CREATE TABLE IF NOT EXISTS genres (
      id INTEGER PRIMARY KEY,
@@ -27,7 +29,6 @@ async function seedGenres() {
     await sql`
       INSERT INTO genres (id, name) 
       VALUES (${genre.id}, ${genre.name})
-      ON CONFLICT (id) DO NOTHING;
     `;
   }
 
@@ -53,6 +54,9 @@ async function seedUsers() {
   ];
 
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`DROP TABLE IF EXISTS users CASCADE`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -69,8 +73,7 @@ async function seedUsers() {
 
       return sql`
         INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hash})
-        ON CONFLICT (id) DO NOTHING;
+        VALUES (${user.id}, ${user.name}, ${user.email}, ${hash})      
       `;
     })
   );
@@ -80,6 +83,8 @@ async function seedUsers() {
 
 async function seedMovies() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`DROP TABLE IF EXISTS movies CASCADE`;
 
   const movies: any[] = [
     {
