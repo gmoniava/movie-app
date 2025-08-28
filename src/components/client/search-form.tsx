@@ -29,8 +29,6 @@ export default function Search() {
 
   const [formState, setFormState] = React.useState<Record<string, any>>(INITIAL_SEARCH_FORM);
 
-  console.log(searchParams);
-
   // Sync form state with URL query parameters
   React.useEffect(() => {
     const getParam = (key: string): string => searchParams.get(key) ?? "";
