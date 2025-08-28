@@ -27,14 +27,14 @@ export default function Search() {
     genres: [],
   });
 
-  // Sync URL with react state
+  // Sync form state with URL query parameters
   React.useEffect(() => {
     const getParam = (key: string): string => searchParams.get(key) ?? "";
 
-    // Extract genre IDs from the URL as integers
     const genreIds = searchParams.getAll("genres").map((g) => parseInt(g, 10));
 
-    // react-select requires value type to match one of the option objects, so we must map genre IDs from URL to full option objects.
+    // react-select expects value to be an option (or array of options),
+    // so we must map genre IDs from URL to full option objects.
     const selectedGenreOptions = options.filter((opt) => genreIds.includes(opt.value));
 
     setFormState({
@@ -59,7 +59,8 @@ export default function Search() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Convert formState into URL query parameters
+    // Convert formState into URL query parameters.
+    // Because backend does search based on query parameters.
     const params = new URLSearchParams();
 
     for (const [key, value] of Object.entries(formState)) {
@@ -71,13 +72,12 @@ export default function Search() {
       }
     }
 
-    // Append all selected genres to the params
     formState.genres.forEach((genre: any) => {
       params.append("genres", genre.value);
     });
 
     startTransition(() => {
-      // Push the updated URL with query parameters, which triggers a new server fetch
+      // Push the updated, which triggers a new server fetch.
       push(`${pathname}?${params.toString()}`);
     });
   };

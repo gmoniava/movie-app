@@ -24,7 +24,8 @@ export default function Page(props: any) {
     if (props.movie) {
       setForm({
         ...props.movie,
-        // React select uses options and values of same type, so we need to get full option object based on the value.
+        // react-select expects value to be an option (or array of options),
+        // so we must map genre IDs from URL to full option objects.
         genres: options.filter((opt) => props.movie.genres?.includes(opt.value)),
       });
     }
