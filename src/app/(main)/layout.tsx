@@ -14,7 +14,7 @@ export default function Layout({
   const [showSidebar, setShowSideBar] = useLocalStorage("movie-app", false);
   const isClient = useIsClient();
 
-  // To avoid hydration issues (since we are using localStorage), we check if we are on the client side
+  // Render only on client to avoid possible hydration issues
   if (!isClient) return null;
 
   return (
