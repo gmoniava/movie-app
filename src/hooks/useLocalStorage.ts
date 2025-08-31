@@ -19,17 +19,14 @@ function useLocalStorage<T>(key: string, initialValue: T) {
     }
 
     return () => {
-      // We need this here in case the key changes.
-      // Otherwise, if the key changes, in the second useEffect we might
-      // write to the new key old value from the previous key.
+      // Reset the mounted flag when key changes, so that the next effect
+      // doesn't accidentally write an old value under the new key.
       hasLoadedRef.current = false;
     };
   }, [key]);
 
   useEffect(() => {
-    // We use this ref to avoid writing to localStorage on the initial render.
-    // Because initial render is used for reading the value from localStorage.
-    // If we write to localStorage on initial render, we might overwrite the value we just read.
+    // Skip writing on the very first render (when we're still reading from localStorage).
     if (hasLoadedRef.current) {
       try {
         window.localStorage.setItem(key, JSON.stringify(storedValue));
