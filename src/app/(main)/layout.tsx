@@ -12,10 +12,6 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const [showSidebar, setShowSideBar] = useLocalStorage("movie-app", false);
-  const isClient = useIsClient();
-
-  // Render only on client to avoid possible hydration issues
-  if (!isClient) return null;
 
   return (
     <div lang="en" className="h-full flex">

@@ -1,15 +1,10 @@
 "use client";
 import Switch from "react-switch";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
-import { useIsClient } from "@uidotdev/usehooks";
+import React from "react";
 
 const Toggle = (props: any) => {
   const { theme, setTheme } = useTheme();
-  const isClient = useIsClient();
-
-  // Render only on client to avoid possible hydration issues
-  if (!isClient) return null;
 
   return (
     <div className="flex items-center gap-5">
