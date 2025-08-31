@@ -16,6 +16,13 @@ function useLocalStorage<T>(key: string, initialValue: T) {
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
     }
+
+    return () => {
+      // We need this here in case the key changes.
+      // Otherwise, if the key changes, in the second useEffect we might
+      // write to the new key old value from the previous key.
+      hasLoadedRef.current = false;
+    };
   }, [key]);
 
   useEffect(() => {
