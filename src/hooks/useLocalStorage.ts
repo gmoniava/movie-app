@@ -4,9 +4,10 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
   const hasLoadedRef = useRef(false);
 
-  // Read from localStorage on client-side mount.
-  // We do this in a useEffect to avoid hydration issues.
-  // AFAIK doing this in initializer function of useState will still cause hydration issues.
+  // Read from localStorage only after the component mounts.
+  // Doing this in useEffect avoids hydration mismatches,
+  // since reading in useState's initializer could cause
+  // server vs. client HTML differences (even with window guards).
   useEffect(() => {
     try {
       const item = window.localStorage.getItem(key);
