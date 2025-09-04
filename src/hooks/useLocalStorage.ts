@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
+// https://stackoverflow.com/questions/72961647/how-to-implement-a-uselocalstorage-hook-in-next-js
 function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
   const hasLoadedRef = useRef(false);
@@ -8,6 +9,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
   // If we did this in useState's initializer (even with `window` guards),
   // the server-rendered HTML could differ from the client’s initial render in the browser,
   // causing hydration issues.
+  // Besides calling localStorage.getItem is a side effect which is not okay in initializer function.
   useEffect(() => {
     try {
       const item = window.localStorage.getItem(key);
