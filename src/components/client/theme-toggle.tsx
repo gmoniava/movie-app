@@ -8,7 +8,9 @@ const Toggle = (props: any) => {
   const { theme, setTheme } = useTheme();
   const isClient = useIsClient();
 
-  // We need this to prevent hydration mismatch related to useTheme
+  // Render this component only on the client to avoid hydration mismatch due
+  // to Switch component - because we are passing it checked state based on the theme.
+  // And theme is determined only on the client side.
   if (!isClient) return null;
 
   return (

@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full ${roboto.className}`}>
+    <html lang="en" className={`h-full ${roboto.className}`} suppressHydrationWarning>
       <body className="h-full bg-(--bg-base) dark:text-white ">
         {" "}
         <Providers>{children}</Providers>
