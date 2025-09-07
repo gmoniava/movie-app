@@ -58,7 +58,7 @@ export default function Layout({
         isOpen={showSidebar}
         close={() => {
           setShowSideBar(false);
-          window.localStorage.setItem("movie-app-sidebar", JSON.stringify(false));
+          window.localStorage.setItem("movie-app-sidebar", "false");
         }}
       />
 
@@ -71,7 +71,7 @@ export default function Layout({
         <Header
           toggleSideBar={() => {
             setShowSideBar(!showSidebar);
-            window.localStorage.setItem("movie-app-sidebar", JSON.stringify(!showSidebar));
+            window.localStorage.setItem("movie-app-sidebar", (!showSidebar).toString());
           }}
         />
         <div className="flex-1 min-h-0">{children}</div>
