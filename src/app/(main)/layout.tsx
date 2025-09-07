@@ -27,7 +27,7 @@ function InlineScript() {
             }
           }
           // Store theme for react to read later
-          (window as any).__INITIAL_THEME__ = theme;
+          window.__INITIAL_THEME__ = theme;
         }).toString()})()`,
       }}
     />
@@ -49,7 +49,7 @@ export default function Layout({
     // to read it since it will not be modified after reading it.
     // I am not sure if reading local storage instead here would also be considered pure.
     // This way now the rendered page after inline script and what react expects during hydration match.
-    return (window as any).__INITIAL_THEME__;
+    return window.__INITIAL_THEME__;
   });
 
   return (
