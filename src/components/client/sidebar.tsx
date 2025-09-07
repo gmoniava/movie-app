@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useAuth } from "@/components/client/auth-provider";
-import Overlay from "@/components/overlay";
+import Overlay from "@/components/client/overlay";
 
 export default function Page(props: any) {
   const { isAuthenticated, checkAuth } = useAuth();
@@ -52,11 +52,11 @@ export default function Page(props: any) {
 
   return (
     <div
+      data-sidebar
       className={clsx(
-        "w-64 bg-(--bg-base) p-5 fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center  delay-100 -left-64 opacity-0",
+        "w-64 bg-(--bg-base) p-5 fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center delay-100 -left-64 opacity-0 transition-opacity duration-500",
         {
           "left-0 opacity-100": props.isOpen,
-          "transition-opacity duration-500": props.shouldAnimate,
         }
       )}
     >
