@@ -44,11 +44,11 @@ export default function Layout({
     if (typeof window === "undefined") {
       return false;
     }
-    // Read the initial value that we stored in the inline script to get the correct theme.
-    // We stored the theme in window because it is considered pure in react to read that value here
-    // (because that value won't change after reading).
-    // I am not sure if reading local storage instead here is also considered pure.
-    // This way now the rendered page after inline script and the react hydration should match.
+    // Read the theme that we used in the inline script.
+    // We stored the theme in window.__INITIAL_THEME__ because it is considered pure
+    // to read it since it will not be modified after reading it.
+    // I am not sure if reading local storage instead here would also be considered pure.
+    // This way now the rendered page after inline script and what react expects during hydration match.
     return (window as any).__INITIAL_THEME__;
   });
 
