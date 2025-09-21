@@ -6,7 +6,7 @@ import Header from "@/components/client/header";
 
 // This inline script runs before react hydration
 // It reads the theme from local storage and applies it to the body
-// This prevents a hydration flicker
+// This prevents sidebar related flicker on initial render
 function InlineScript() {
   return (
     <script
@@ -46,7 +46,7 @@ export default function Layout({
     }
     // Read the theme that we used in the inline script.
     // We stored the theme in window.__INITIAL_THEME__ because it is considered pure
-    // to read it since it will not be modified after reading it.
+    // to read it here since it will not be modified after reading it.
     // I am not sure if reading local storage instead here would also be considered pure.
     // This way now the rendered page after inline script and what react expects during hydration match.
     return window.__INITIAL_THEME__;
