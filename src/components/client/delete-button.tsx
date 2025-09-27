@@ -23,13 +23,13 @@ const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) =>
         alert("Error deleting movie: " + result.error);
         return;
       }
-      // Calculate new total count (subtract 1 because one movie deleted)
+      // Calculate new total after deletion
       const newTotal = total - 1;
 
-      // Calculate last valid page
+      // Calculate last page number based on new total
       const lastPage = Math.max(1, Math.ceil(newTotal / PAGE_SIZE));
 
-      // If the new last page is less than current page, we need to update the current page too.
+      // Did current page become invalid?
       if (currentPage > lastPage) {
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set("page", String(lastPage));

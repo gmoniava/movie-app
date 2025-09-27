@@ -1,6 +1,5 @@
 "use server";
 import postgres from "postgres";
-import { NextResponse } from "next/server"; // To send a response
 import { z } from "zod";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
