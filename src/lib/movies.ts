@@ -1,6 +1,6 @@
 import postgres from "postgres";
 import { NextResponse } from "next/server"; // To send a response
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { getSession } from "./auth";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "@/utils";
@@ -48,15 +48,17 @@ export async function searchMovies(
       description: searchParams.get("description"),
     };
 
+    // Validate and parse the input
     const { name, page, perPage, genres, releaseYearFrom, releaseYearTo, actor, description } = SearchSchema.parse(raw);
 
+    // Queries for each filter
     const nameQuery = name ? sql`AND m.name ILIKE ${"%" + name + "%"}` : sql``;
     const releaseYearFromQuery = releaseYearFrom ? sql`AND m.release_year >= ${releaseYearFrom}` : sql``;
     const releaseYearToQuery = releaseYearTo ? sql`AND m.release_year <= ${releaseYearTo}` : sql``;
     const actorQuery = actor ? sql`AND m.actors ILIKE ${"%" + actor + "%"}` : sql``;
     const descriptionQuery = description ? sql`AND m.description ILIKE ${"%" + description + "%"}` : sql``;
 
-    // We need a movie who has at least one matching genre
+    // For genres filter create a subquery
     const genreQuery =
       genres.length > 0
         ? sql`
@@ -69,7 +71,7 @@ export async function searchMovies(
       `
         : sql``;
 
-    // Get total count
+    // Just get the count of distinct movies matching the criteria
     const [{ count }] = await sql`
     SELECT COUNT(DISTINCT m.id)::int
     FROM movies m
@@ -82,8 +84,9 @@ export async function searchMovies(
     ${genreQuery}
   `;
 
-    // Get paginated data
     const offset = (page - 1) * perPage;
+
+    // Now get the actual movie data with aggregated genres
     const data: Movie[] = await sql`
     SELECT m.id, m.name, m.release_year AS "releaseYear", m.actors, m.description,
            ARRAY_AGG(DISTINCT g.name) FILTER (WHERE g.name IS NOT NULL) AS genres
@@ -105,7 +108,13 @@ export async function searchMovies(
 
     return { data, total: count };
   } catch (err: any) {
-    return { error: err.message };
+    if (err instanceof ZodError) {
+      console.error("Validation error:", err.issues);
+      return { error: "Validation error" };
+    } else {
+      console.error("Something went wrong:", err);
+      return { error: err.message || "Something went wrong" };
+    }
   }
 }
 
@@ -115,8 +124,9 @@ export async function getMovieById(id: string): Promise<Movie | { error: string 
     return { error: "Unauthorized" };
   }
 
-  // Get movie details with aggregated genres
-  const movies: Movie[] = await sql`
+  try {
+    // Get movie details with aggregated genres
+    const movies: Movie[] = await sql`
       SELECT m.id, m.name, m.release_year as "releaseYear", m.actors, m.description,
             ARRAY_AGG(mg.genre_id) FILTER (WHERE mg.genre_id IS NOT NULL) AS genres
       FROM movies m
@@ -125,9 +135,13 @@ export async function getMovieById(id: string): Promise<Movie | { error: string 
       GROUP BY m.id
     `;
 
-  if (!movies[0]) {
-    return { error: "Movie not found" };
-  }
+    if (!movies[0]) {
+      return { error: "Movie not found" };
+    }
 
-  return movies[0];
+    return movies[0];
+  } catch (err: any) {
+    console.error("getMovieById failed:", err);
+    return { error: err.message || "Something went wrong" };
+  }
 }

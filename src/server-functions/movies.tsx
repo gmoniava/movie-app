@@ -1,6 +1,6 @@
 "use server";
 import postgres from "postgres";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { getSession } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
@@ -41,10 +41,13 @@ export async function deleteMovie(movieId: string) {
 
     revalidatePath("/search");
   } catch (err: any) {
-    console.error("deleteMovie failed:", err);
-    return {
-      error: "Something went wrong. Please try again.",
-    };
+    if (err instanceof ZodError) {
+      console.error("Validation error:", err.issues);
+      return { error: "Validation error" };
+    } else {
+      console.error("Something went wrong:", err);
+      return { error: err.message || "Something went wrong" };
+    }
   }
 }
 
@@ -88,10 +91,13 @@ export async function addMovie(formData: FormData) {
 
     return { data: "Movie added successfully!" };
   } catch (err: any) {
-    console.error("addMovie failed:", err);
-    return {
-      error: "Something went wrong. Please try again.",
-    };
+    if (err instanceof ZodError) {
+      console.error("Validation error:", err.issues);
+      return { error: "Validation error" };
+    } else {
+      console.error("Something went wrong:", err);
+      return { error: err.message || "Something went wrong" };
+    }
   }
 }
 
@@ -139,9 +145,12 @@ export async function editMovie(formData: FormData) {
 
     return { data: "Movie edited successfully!" };
   } catch (err: any) {
-    console.error("editMovie failed:", err);
-    return {
-      error: "Something went wrong. Please try again.",
-    };
+    if (err instanceof ZodError) {
+      console.error("Validation error:", err.issues);
+      return { error: "Validation error" };
+    } else {
+      console.error("Something went wrong:", err);
+      return { error: err.message || "Something went wrong" };
+    }
   }
 }
