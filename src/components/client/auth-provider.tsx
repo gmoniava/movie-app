@@ -30,14 +30,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       const res = await fetch("api/session");
-      if (!res.ok) throw new Error("Auth check failed");
+      if (!res.ok) throw new Error("User is not authenticated");
 
+      // If the response is okay, parse the JSON
       const data = await res.json();
       setAuthState({
         isAuthenticated: data.authenticated,
         session: data.session,
       });
     } catch (error) {
+      console.error("Auth check error:", error);
       setAuthState({
         isAuthenticated: false,
         session: null,
