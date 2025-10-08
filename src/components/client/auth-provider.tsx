@@ -39,7 +39,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         session: data.session,
       });
     } catch (error) {
-      console.error("Auth check error:", error);
       setAuthState({
         isAuthenticated: false,
         session: null,
