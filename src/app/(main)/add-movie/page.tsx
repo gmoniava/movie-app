@@ -19,8 +19,7 @@ export default function Page(props: any) {
   const [form, setForm] = useState<Record<string, any>>(INITIAL_FORM);
 
   React.useEffect(() => {
-    // In edit mode, fill form data with the movie data passed as props.
-    // If we got movie, it means we are in edit mode.
+    // If we have a movie prop, we are in edit mode, so populate the form with existing movie data.
     if (props.movie) {
       setForm({
         ...props.movie,
@@ -52,6 +51,7 @@ export default function Page(props: any) {
         data.append("genres", genre.value.toString());
       });
     }
+
     startTransition(async () => {
       // Are we in edit mode or add mode?
       if (props.movie) {

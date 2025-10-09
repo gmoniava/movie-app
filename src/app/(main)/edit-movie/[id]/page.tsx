@@ -5,10 +5,10 @@ export default async function Page(props: any) {
   const params = await props.params;
   const id = params.id;
 
-  // On this route, we get the we want to edit
+  // Fetch movie by ID.
   const movie = await getMovieById(id);
 
-  // If we got error, just show the error message.
+  // If we could not get the movie, show an error message.
   if ("error" in movie) {
     return <div>{movie.error}</div>;
   }

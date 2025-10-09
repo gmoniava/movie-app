@@ -14,19 +14,24 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
+    // Prepare form data
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
 
     startTransition(async () => {
       const result = await login(null, formData);
+
+      // Login success?
       if (result?.error) {
         setError(result.error);
       } else {
+        // Yes, update auth state on the client side and redirect to home page
         await checkAuth();
         push("/");
       }

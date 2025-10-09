@@ -58,13 +58,14 @@ export default function Search() {
     setFormState((prev: any) => ({ ...prev, genres: selected || [] }));
   };
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Convert formState into URL query parameters.
-    // Because backend does search based on query parameters.
     const params = new URLSearchParams();
 
+    // Convert formState into URL query parameters.
+    // Because backend does search based on query parameters.
     for (const [key, value] of Object.entries(formState)) {
       // genres handled separately, see below
       if (key === "genres") continue;
@@ -79,7 +80,8 @@ export default function Search() {
     });
 
     startTransition(() => {
-      // Push the updated, which triggers a new server fetch.
+      // Push new URL with updated query parameters.
+      // This will trigger server component to re-fetch data.
       push(`${pathname}?${params.toString()}`);
     });
   };
