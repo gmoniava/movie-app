@@ -16,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   checkAuth: async () => {},
 });
 
+// AuthProvider component to wrap around parts of the app that need auth state
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authState, setAuthState] = useState<{
     isAuthenticated: boolean | null;
@@ -26,13 +27,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
   const [isLoading, setIsLoading] = useState(true);
 
+  // Function to check authentication status using session API
   const checkAuth = async () => {
     setIsLoading(true);
     try {
       const res = await fetch("api/session");
       if (!res.ok) throw new Error("User is not authenticated");
 
-      // If the response is okay, parse the JSON
       const data = await res.json();
       setAuthState({
         isAuthenticated: data.authenticated,
