@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   checkAuth: async () => {},
 });
 
-// AuthProvider component to wrap around parts of the app that need auth state
+// AuthProvider component to provide auth state
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authState, setAuthState] = useState<{
     isAuthenticated: boolean | null;
