@@ -15,10 +15,10 @@ function InlineScript() {
           const layout = document.querySelector("[data-layout]");
           const sidebar = document.querySelector("[data-sidebar]");
 
-          const sidebar_state = localStorage.getItem("movie-app-sidebar") === "true";
+          const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
 
           if (layout && sidebar) {
-            if (sidebar_state) {
+            if (showSidebar) {
               layout.classList.add("sm:ml-64");
               sidebar.classList.add("left-0", "opacity-100");
             } else {
@@ -27,7 +27,7 @@ function InlineScript() {
             }
           }
           // Store sidebar state for react to read later
-          window._INITIAL_SIDEBAR_STATE_ = sidebar_state;
+          window._INITIAL_SIDEBAR_STATE_ = showSidebar;
         }).toString()})()`,
       }}
     />
