@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Header from "@/components/client/header";
 
 // This inline script runs before react hydration
-// It reads the theme from local storage and applies it to the body
+// It reads the sidebar state from local storage and applies it to the body
 // This prevents sidebar related flicker on initial render
 function InlineScript() {
   return (
@@ -15,10 +15,10 @@ function InlineScript() {
           const layout = document.querySelector("[data-layout]");
           const sidebar = document.querySelector("[data-sidebar]");
 
-          const theme = localStorage.getItem("movie-app-sidebar") === "true";
+          const sidebar_state = localStorage.getItem("movie-app-sidebar") === "true";
 
           if (layout && sidebar) {
-            if (theme) {
+            if (sidebar_state) {
               layout.classList.add("sm:ml-64");
               sidebar.classList.add("left-0", "opacity-100");
             } else {
@@ -26,8 +26,8 @@ function InlineScript() {
               sidebar.classList.remove("left-0", "opacity-100");
             }
           }
-          // Store theme for react to read later
-          window.__INITIAL_THEME__ = theme;
+          // Store sidebar state for react to read later
+          window._INITIAL_SIDEBAR_STATE_ = sidebar_state;
         }).toString()})()`,
       }}
     />
@@ -44,12 +44,12 @@ export default function Layout({
     if (typeof window === "undefined") {
       return false;
     }
-    // Read the theme that we used in the inline script.
-    // We stored the theme in window.__INITIAL_THEME__ because it is considered pure
+    // Read the sidebar state that we used in the inline script.
+    // We stored the sidebar state in window._INITIAL_SIDEBAR_STATE_ because it is considered pure
     // to read it here since it will not be modified after reading it.
     // I am not sure if reading local storage instead here would also be considered pure.
     // This way now the rendered page after inline script and what react expects during hydration match.
-    return window.__INITIAL_THEME__;
+    return window._INITIAL_SIDEBAR_STATE_;
   });
 
   return (

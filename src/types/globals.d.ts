@@ -2,6 +2,6 @@ export {}; // ensures this file is a module
 
 declare global {
   interface Window {
-    __INITIAL_THEME__: any;
+    _INITIAL_SIDEBAR_STATE_: any;
   }
 }
