@@ -5,23 +5,26 @@ import clsx from "clsx";
 import Header from "@/components/client/header";
 
 // This inline script runs before react hydration
-// It reads the sidebar state from local storage and applies it to the body
-// This prevents sidebar related flicker on initial render
+// It reads the sidebar state from local storage and applies it to the body.
+// This prevents sidebar related flicker on initial render.
 function InlineScript() {
   return (
     <script
       dangerouslySetInnerHTML={{
         __html: `(${(() => {
+          const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
+
+          // Get layout and sidebar elements
           const layout = document.querySelector("[data-layout]");
           const sidebar = document.querySelector("[data-sidebar]");
 
-          const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
-
           if (layout && sidebar) {
             if (showSidebar) {
+              // Apply sidebar open styles
               layout.classList.add("sm:ml-64");
               sidebar.classList.add("left-0", "opacity-100");
             } else {
+              // Apply sidebar closed styles
               layout.classList.remove("sm:ml-64");
               sidebar.classList.remove("left-0", "opacity-100");
             }
@@ -44,23 +47,23 @@ export default function Layout({
     if (typeof window === "undefined") {
       return false;
     }
-    // Read the sidebar state that we used in the inline script.
+    // Read the sidebar state that we used during the inline script.
     // We stored the sidebar state in window._INITIAL_SIDEBAR_STATE_ because it is considered pure
-    // to read it here since it will not be modified after reading it.
+    // to read from it here imho (since window._INITIAL_SIDEBAR_STATE_ will not be modified after we read it here).
     // I am not sure if reading local storage instead here would also be considered pure.
     // This way now the rendered page after inline script and what react expects during hydration match.
     return window._INITIAL_SIDEBAR_STATE_;
   });
 
+  // Function to update sidebar state and persist it to local storage
+  const updateSidebarState = (state: boolean) => {
+    setShowSideBar(state);
+    window.localStorage.setItem("movie-app-sidebar", state.toString());
+  };
+
   return (
     <div lang="en" className="h-full flex">
-      <Sidebar
-        isOpen={showSidebar}
-        close={() => {
-          setShowSideBar(false);
-          window.localStorage.setItem("movie-app-sidebar", "false");
-        }}
-      />
+      <Sidebar isOpen={showSidebar} close={() => updateSidebarState(false)} />
 
       <div
         data-layout
@@ -70,8 +73,7 @@ export default function Layout({
       >
         <Header
           toggleSideBar={() => {
-            setShowSideBar(!showSidebar);
-            window.localStorage.setItem("movie-app-sidebar", (!showSidebar).toString());
+            updateSidebarState(!showSidebar);
           }}
         />
         <div className="flex-1 min-h-0">{children}</div>
