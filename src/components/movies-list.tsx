@@ -7,6 +7,7 @@ const MovieList = ({ searchResults }: any) => {
     <div className="p-4 shadow-md">
       <h2 className="text-2xl font-semibold mb-4 ">Movies</h2>
 
+      {/* Simply render movies table if available. */}
       {searchResults.data?.length === 0 ? (
         <p className="text-center ">No movies found.</p>
       ) : (
