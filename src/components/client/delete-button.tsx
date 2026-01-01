@@ -19,6 +19,7 @@ const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) =>
 
     startTransition(async () => {
       const result = await deleteMovie(movieId);
+
       if (result?.error) {
         alert("Error deleting movie: " + result.error);
         return;
@@ -29,7 +30,7 @@ const DeleteButton = ({ movieId, total }: { movieId: string; total: number }) =>
       // Calculate last page number based on new total
       const lastPage = Math.max(1, Math.ceil(newTotal / PAGE_SIZE));
 
-      // Did current page become invalid?
+      // Did current page become invalid? If so, navigate to last valid page.
       if (currentPage > lastPage) {
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.set("page", String(lastPage));
