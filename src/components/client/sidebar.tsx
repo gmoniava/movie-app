@@ -55,16 +55,14 @@ export default function Page(props: any) {
     <div
       data-sidebar
       className={clsx(
-        "w-64 bg-(--bg-base) p-5 fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center delay-100 z-1 -left-64 opacity-0 transition-opacity duration-500",
+        "group w-64 bg-(--bg-base) p-5 fixed border-r border-r-gray-300 h-full flex flex-col gap-5 items-center delay-100 z-1 -left-64 opacity-0 transition-opacity duration-500",
         {
           "left-0 opacity-100": props.isOpen,
-        }
+        },
       )}
     >
       {/* Backdrop for mobile - visible only on mobile when sidebar is open */}
-      {props.isOpen && (
-        <Overlay positionClass="left-64 top-0 bottom-0 right-0" responsiveClass={"md:hidden"} useLoading={false} />
-      )}
+      <div className="fixed left-64 top-0 bottom-0 right-0 hidden group-[.left-0]:block md:!hidden  bg-black opacity-25 z-950 pointer-events-auto" />
 
       {/* Close button - visible only on mobile when sidebar is open */}
       <div className="md:hidden w-64 flex justify-end pr-5">
