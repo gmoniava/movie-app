@@ -4,6 +4,29 @@ import React from "react";
 import clsx from "clsx";
 import Header from "@/components/client/header";
 
+function initializeSidebar() {
+  const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
+
+  // Get layout and sidebar elements
+  const layout = document.querySelector("[data-layout]");
+  const sidebar = document.querySelector("[data-sidebar]");
+
+  if (layout && sidebar) {
+    if (showSidebar) {
+      // Apply sidebar open styles
+      layout.classList.add("sm:ml-64");
+      sidebar.classList.add("left-0", "opacity-100");
+    } else {
+      // Apply sidebar closed styles
+      layout.classList.remove("sm:ml-64");
+      sidebar.classList.remove("left-0", "opacity-100");
+    }
+  }
+  // Store sidebar state for react to read later
+  window._INITIAL_SIDEBAR_STATE_ = showSidebar;
+}
+
+
 // This inline script runs before react hydration
 // It reads the sidebar state from local storage and applies it to the body.
 // This prevents sidebar related flicker on initial render.
@@ -11,27 +34,7 @@ function InlineScript() {
   return (
     <script
       dangerouslySetInnerHTML={{
-        __html: `(${(() => {
-          const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
-
-          // Get layout and sidebar elements
-          const layout = document.querySelector("[data-layout]");
-          const sidebar = document.querySelector("[data-sidebar]");
-
-          if (layout && sidebar) {
-            if (showSidebar) {
-              // Apply sidebar open styles
-              layout.classList.add("sm:ml-64");
-              sidebar.classList.add("left-0", "opacity-100");
-            } else {
-              // Apply sidebar closed styles
-              layout.classList.remove("sm:ml-64");
-              sidebar.classList.remove("left-0", "opacity-100");
-            }
-          }
-          // Store sidebar state for react to read later
-          window._INITIAL_SIDEBAR_STATE_ = showSidebar;
-        }).toString()})()`,
+        __html: `(${initializeSidebar.toString()})()`,
       }}
     />
   );
