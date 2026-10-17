@@ -6,23 +6,17 @@ import Header from "@/components/client/header";
 
 function initializeSidebar() {
   const showSidebar = localStorage.getItem("movie-app-sidebar") === "true";
-
-  // Get layout and sidebar elements
   const layout = document.querySelector("[data-layout]");
   const sidebar = document.querySelector("[data-sidebar]");
 
   if (layout && sidebar) {
-    if (showSidebar) {
-      // Apply sidebar open styles
-      layout.classList.add("sm:ml-64");
-      sidebar.classList.add("left-0", "opacity-100");
-    } else {
-      // Apply sidebar closed styles
-      layout.classList.remove("sm:ml-64");
-      sidebar.classList.remove("left-0", "opacity-100");
-    }
+    // Add each class when open; remove it when closed.
+    layout.classList.toggle("sm:ml-64", showSidebar);
+    sidebar.classList.toggle("left-0", showSidebar);
+    sidebar.classList.toggle("opacity-100", showSidebar);
   }
-  // Store sidebar state for react to read later
+
+  // Let React initialize with the same state.
   window._INITIAL_SIDEBAR_STATE_ = showSidebar;
 }
 
