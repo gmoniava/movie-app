@@ -44,12 +44,10 @@ export default function Layout({
     if (typeof window === "undefined") {
       return false;
     }
-    // Read the sidebar state that we used during the inline script.
     // We stored the sidebar state in window._INITIAL_SIDEBAR_STATE_ because it is considered pure imho
     // to read from it here because window._INITIAL_SIDEBAR_STATE_ will not be modified after we read it
     // (see here also: https://gist.github.com/sebmarkbage/75f0838967cd003cd7f9ab938eb1958f#forbidden).
     // I am not sure if reading local storage instead here would also be considered pure.
-    // This way now the rendered page after inline script and what react expects during hydration match.
     return window._INITIAL_SIDEBAR_STATE_;
   });
 
